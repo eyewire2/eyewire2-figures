@@ -1,0 +1,40 @@
+# data
+*.pkl
+*.pickle
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.csv
+*.tsv
+
+# logs
+*.log
+*.out
+*.err
+
+# checkpoints
+*.ckpt
+*.pt
+*.pth
+*.bin
+
+# jupyter
+.ipynb_checkpoints/
+
+# vscode
+.vscode/
+
+# pycharm
+.idea/
+
+# cache
+__pycache__/
+*.pyc
+*.pyo
+*.cache
+*.egg-info/
+
+# env
+.env/
+.venv/
