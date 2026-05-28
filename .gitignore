@@ -39,3 +39,6 @@ __pycache__/
 # env
 .env/
 .venv/
+
+# dev
+dev/

@@ -1,0 +1,4 @@
+root: "../data"
+skel_dir:  "../data/swc"
+version: "2026-05-15-15h"
+file_prefix: "df_all_neurons_"
