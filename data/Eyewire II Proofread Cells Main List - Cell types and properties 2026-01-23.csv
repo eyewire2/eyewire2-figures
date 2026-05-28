@@ -1,0 +1,189 @@
+Cell type name,Cell class,Short name for MS,Helmstaeder name,EW1 name,Other names,EW II Type,Reference,Reference links,temporary comments,Stratification,peak position,Axon ,Dendritic field size,Dendritic field shape,Dendrite shape ,Dendritic field density,Soma layers,Surround suppression level,Response kinetics,Response polarity,Spiking,OS,DS,Count,Example
+A1,AC,A1,-,-,nNOS-1,,"Park et al., 2020",,"has been called A1 in primates, cat and rabbit ",bistratified low/deep,,yes,wide,,,,GCL,,,ON,,,,93,D234
+A2,AC,A2,H24,-,,,,,,bistratified diffuse ,0,no,small ,symmetric,curly,dense,INL,,,ON,,,,83,G374
+A17,AC,A17,H49,-,,,"Nelson & Kolb, 1985",,,monostratified diffuse,0,,wide,symmetric,wavy,dense,INL/GCL,,,ON,,,,79,D88
+Bowtie deep in IPL,AC,Bowtie,H28,-,WF2,,"Bloomfield & Miller, 1986",,likely has subtypes ,monostratified layered,,,wide,,,,INL,,,OFF,,,,11,C482
+Comet,AC,Comet,H31,-,,,,,,monostratified layered,,no,wide,asymmetric,,,INL,,,OFF,,,,2,G373
+Medium-field deep in IPL sustained,AC,MfDeep-s,,-,,,,,,,,,medium ,,,,GCL,,,,,,,6,
+Medium-field deep in IPL transient,AC,MfDeep-t,,-,,,,,,,,,medium ,,,,GCL,,,,,,,8,
+Medium-field dorsal pointing low in IPL,AC,MfDeep-d,,-,,,,,,,,,medium ,,,,GCL,,,,,,,3,C199
+Medium-field hugging ON ChAT,AC,MfHug,,-,,,,,,,,,medium ,,,,GCL,,,,,,,,C167
+Medium-field low in IPL sustained,AC,MfLow-s,,-,"CRH-2, GBX2-S5",,,,,,,,medium ,,,,GCL,,,,,,,52,D308
+Medium-field low in IPL transient,AC,MfLow-t,H55 ?,-,VIP3,,"Perez de Sevilla Mueller et al., 2019",,,monostratified ,1,,medium ,slightly asymmetric,branchy wavy,dense-ish,GCL,,,,,,,73,
+Medium-field Mid-IPL smooth,AC,MfMid-s,,-,nGnG ? ,,,,,,,no,medium ,asymmetric,,,GCL,,,,,,,51,C334
+Medium-field Mid-IPL varicose,AC,MfMid-v,H43,-,Gbx2-S3,,,,,,,no,medium ,asymmetric,,,GCL,,,,,,,29,D202
+Midnight,AC,MN,,-,,,,,,,,no,wide,,,,GCL,,,ON,,,,36,D78
+nNOS-2,AC,nNOS-2,"H37, H41",-,,,"Jacoby et al., 2018",,likey has sub types,monostratified deep,,,wide,,,,INL/GCL,,,ON,,,,24,
+Separate dendrites and axons,AC,SAD,H57,-,,,,,at least two types,monostratified flat,0,yes,wide,asymmetric,"long curly, short cury",,GCL,,,ON,,,,144,D63
+ON SAC,AC,On-SAC,H51,-,,,,,,,,no,medium ,symmetric,,,GCL,,,ON,,,,417,D363
+OFF SAC,AC,Off-SAC,H33,-,,,,,,,,no,medium ,symmetric,,,INL,,,OFF,,,,113,G142
+Dorsal-pointing neurites low in IPL,AC,DpLow,,-,,,,,,,,,,,,,,,,,,,,2,
+Wide-field deep in IPL,AC,WfDeep,,-,,,,,,,,,wide,,,,,,,,,,,,
+Wide-field mid IPL,AC,WfMid,H37,-,,,,,,,,,wide,,,,,,,,,,,59,D223
+Wide-field ON non-spiny dense,AC,WfNs-d,H56,-,,,,,,monostratified flat,0,,wide,asymmetric,straight,dense,GCL,,,ON,,,,39,D273
+Wide-field ON non-spiny sparse,AC,WfNs-s,displaced H53,-,,,,,,,,,wide,,,,,,,ON,,,,21,D44
+Wide-field ON spiny spikelets,AC,WfS-sl,,-,,,,,,,,probably,wide,,,,,,,ON,,,,31,D104
+Wide-field ON spiny spikes,AC,WfS-s,,-,,,,,,,,probably,wide,,,,,,,ON,,,,28,D342
+Bursty suppressed by contrast,RGC,bSbC,,2o,,,"Tien et al., 2016 ?","Jacoby et al., 2018",,,,,,,,,GCL,,,,,,,2,D203
+M1,RGC,M1,,1ws,,,,,,,,,,,,,GCL,,,,,,,4,D366
+F-mini-OFF,RGC,FmOff,,2an,,,"Rousso et al., 2016","Nath et al., 2016",,,,,small ,,,,GCL,,,OFF,,yes,yes ,10,D49
+F-mini-ON,RGC,FmOn,,63,,,"Rousso et al., 2016","Nath et al., 2016",,,,,small ,,,,GCL,,,ON,,yes,yes ,9,D69
+HD1,RGC,HD1,,5si,,,"Jacoby et al., 2017",,,,,,small ,,,,GCL,,transient ,ON-OFF,,,,5,D311
+HD2,RGC,HD2,,5so,"W3b, Object Motion Sensor",,"Zhang et al., 2012","Jacoby et al., 2017",,,,,small ,,,,GCL,strong,transient ,ON-OFF,,,,7,D45
+Local edge detector,RGC,LED,H7,51,,,,,,,,,,,,,GCL,,,,,,,,E8
+M2,RGC,M2,,9w,,,,,,,,,,,,,GCL,,,,,,,,
+M6,RGC,M6,,91,,,,,,,,,,,,,GCL,,,,,,,4,D180
+5to,RGC,e5to,,5to,,,,,,,,,,,,,GCL,,,,,,,,
+OFF horizontal OS - symmetric,RGC,hOffOS,,2aw,F-midi-OFF,,,,,,,,,,,,GCL,,,OFF,,yes,,,D324
+OFF medium sustained,RGC,sOff-m,,2i,,,,,,,,,,,,,GCL,,sustained,OFF,,,,4,D138
+OFF OS - subtype unknown,RGC,OffOS,,-,,,,,,,,,,,,,GCL,,,OFF,,yes,,,
+OFF sustained alpha,RGC,sOff-a,,1wt,,,,,,,,,,,,,GCL,,sustained,OFF,,,,1,D271
+OFF sustained EW1no,RGC,e1no,,1no,,,,,,,,,,,,,GCL,,sustained,OFF,,,,1,D235
+OFF sustained EW3o,RGC,e3o,,3o,,,,,,,,,,,,,GCL,,sustained,OFF,,,,1,
+OFF transient - subtype unknown,RGC,tOff,,-,,,,,,,,,,,,,GCL,,transient ,OFF,,,,,
+OFF transient alpha,RGC,tOff-a,,4ow,,,,,,,,,,,,,GCL,,transient ,OFF,,,,4,D275
+OFF transient medium RF,RGC,tOff-m,,4on,,,,,,,,,,,,,GCL,,transient ,OFF,,,,4,D20
+OFF transient small RF,RGC,tOff-s,,4i,,,,,,,,,,,,,GCL,,transient ,OFF,,,,5,D357
+OFF vertical OS - asymmetric,RGC,vOffOS,,2aw,"JamB, OFF DS",,"Kim et al., 2008",,,,,,,,,,GCL,,transient ,OFF,,yes,yes ,14,D14
+ON alpha,RGC,sOn-a,,8w,M4,,,,,,,,,,,,GCL,,,ON,,,,7,D39
+ON bursty,RGC,bOnSbC,,3i,,,,,,,,,,,,,GCL,,,ON,,,,3,D189
+ON delayed,RGC,dOnSbC,,73,transient SbC,,"Jacoby et al., 2016 ?","Jacoby et al., 2018",,,,,,,,,GCL,,,ON,,,,4,D5
+ON DS sustained - direction unknown,RGC,sOnDS,,"7iv,r,d",,,,,,,,,,,,,GCL,,sustained,ON,,,yes ,2,D34
+ON DS sustained - dorsonasal,RGC,sOnDS-dn,,7iv,,,,,,,,,,,,,GCL,,sustained,ON,,,yes ,1,
+ON DS sustained - temporal,RGC,sOnDS-t,,7ir,,,,,,,,,,,,,GCL,,sustained,ON,,,yes ,2,
+ON DS sustained - ventral,RGC,sOnDS-v,,7id,,,,,,,,,,,,,GCL,,transient ,ON,,,yes ,1,
+ON DS transient - temporal,RGC,tOnDS-t,,7o,,,,,,,,,,,,,GCL,,,ON,,,yes ,,
+ON OS large RF - orientation unknown,RGC,OnOS-l,,-,,,,,,,,,,,,,GCL,,,ON,,yes,,,
+ON OS small RF - orientation unknown,RGC,OnOS-s,,-,,,,,,,,,,,,,GCL,,,ON,,yes,,,
+ON small OFF large,RGC,On-s-Off-l,,1ni,,,,,,,,,,,,,GCL,,,ON,,,,,E23
+ON transient EW6t,RGC,e6t,,6t,,,,,,,,,,,,,GCL,,transient ,ON,,,,2,D19
+ON transient medium RF,RGC,tOn-m,,6sw,,,,,,,,,,,,,GCL,,transient ,ON,,,,3,D9
+ON transient small RF,RGC,tOn-s,,6sn,,,,,,,,,,,,,GCL,,transient ,ON,,,,3,D113
+ON vertical OS large RF,RGC,vOnOS-l,,tbd,,,"Nath et al., 2016",,,,,,,,,,GCL,,,ON,,yes,,,
+ON vertical OS small RF,RGC,vOnOS-s,,tbd,,,"Nath et al., 2016",,,,,,,,,,GCL,,,ON,,yes,,1,
+ON horizontal OS small RF,RGC,hOnOS-s,,tbd,,,,,,,,,,,,,GCL,,,ON,,yes,,1,
+ON horizontal OS large RF,RGC,hOnOSl,,tbd,,,,,,,,,,,,,GCL,,,ON,,yes,,,
+ON-OFF - subtype unknown,RGC,OO,,-,,,,,,,,,,,,,GCL,,,ON-OFF,,,,7,
+ON-OFF DS - direction unknown,RGC,OODS,H9,37,,,,,,,,,,,,,GCL,,,ON-OFF,,,,8,
+ON-OFF DS - dorsal,RGC,OODS-d,,37v,,,,,,,,,,,,,GCL,,,ON-OFF,,,,,
+ON-OFF DS - nasal,RGC,OODS-n,,37c,,,,,,,,,,,,,GCL,,,ON-OFF,,,,,
+ON-OFF DS - temporal,RGC,OODS-t,,37r,,,,,,,,,,,,,GCL,,,ON-OFF,,,,,
+ON-OFF DS - ventral,RGC,OODS-v,,37d,,,,,,,,,,,,,GCL,,,ON-OFF,,,,1,D2
+PixON,RGC,M5,,9n,M5,,,,,,,,,,,,GCL,,,,,,,5,E103
+Sustained suppressed-by-contrast no surround EW27,RGC,e27,,27,,,"Goetz et al., 2022",,,,,,,,,,GCL,,,,,,,1,D27
+Sustained suppressed-by-contrast strong surround EW28,RGC,e28,,28,,,"Goetz et al., 2022",,,,,,,,,,GCL,,,,,,,4,D157
+UHD,RGC,UHD,,5ti,W3b,,"Jacoby et al., 2017",,,,,,small ,,,,GCL,,transient ,ON-OFF,,,,16,D42
+EW25,RGC,e25,,25,,,,,,,,,,,,,GCL,,,,,,,8,D95
+ON sustained - subtype unknown,RGC,sOn,,1ws,,,,,,,,,,,,,GCL,,,,,,,,D181
+EW915,RGC,e915,,915,,,,,,,,,,,,,GCL,,,,,,,,
+EW85,RGC,e85,,85,,,,,,,,,,,,,GCL,,,,,,,,
+H13,AC,H13,H13,,,,,,,,,,small ,,,,INL,,,OFF,,,,25,
+H14,AC,H14,H14,,Narrow S1,,MacNeil & Masland 1999,,,,,,small ,,,,INL,,,OFF,,,,9,
+H15,AC,H15,H15,,Flat bistratified,,MacNeil & Masland 1999,,,,,,small ,,,,INL,,,OFF,,,,7,
+H16,AC,H16,H16,,,,,,,,,,small ,,,,INL,,,ON-OFF,,,,3,
+H18,AC,H18,H18,,A8 ,,"Lee et al., 2016","Jo et al., 2023 say SEG looks like H18. Their SEG looks different from the one in Kay et al., 2011",,,,,small ,,,,INL,,,ON-OFF,,,,30,G199
+H19,AC,H19,H19,,OFF NAC,,"Jain et al, 2022",,,,,,small ,,,,INL,,,OFF,,,,34,
+H20,AC,H20,H20,,"SEG, Narrow diffuse, nGnG",,"Kay et al., 2011",,,,,,small ,,,,INL,,,ON-OFF,,,,46,G887
+H21,AC,H21,H21,,Flag A,,MacNeil & Masland 1999,,,,,,small ,,,,INL,,,ON-OFF,,,,17,G1049
+H22,AC,H22,H22,,"ON NAC, SI - AC",,"Jo et al., 2023",,,,,,small ,,,,INL,,,,,,,3,
+H23,AC,H23,H23,,"MAC, SI - AC?",,"Grimes et al., 2021",,,,,,small ,,,,INL,,,ON,,,,56,
+vGlut3,AC,vGlut3,"H46, H48 ? ",,GAC,,"Lee et al., 2016","Mani et al., 2023",,diffuse between ChAT bands,,,,,,,INL,,transient ,ON-OFF,,,,,
+VIP1,AC,VIP1,H40,,VIPm-RAC2,,"Perez de Sevilla Mueller et al., 2019",Zhu et al;. 2014,,,,,,,,,,,,,,,,,
+VIP2,AC,VIP2,H50,,,non-displaced hugging ON ChAT,"Perez de Sevilla Mueller et al., 2019",,small ?,monostratified diffuse,2,,medium ,symmetric,curly,dense,,,,,,,,,
+DAC ,AC,DAC ,H25,,dopaminergic amacrine cells,,"Zhang et al., 2008",,,,,,,,,,,,,,,,,,
+t1,BC,t1,,,,,"Shekar et al., 2017",,,,,,,,,,INL,,transient ,OFF,,,,38,G13
+t2,BC,t2,,,,,,,,,,,,,,,INL,,transient ,OFF,,,,86,G14
+t3a,BC,t3a,,,,,,,,,,,,,,,INL,,transient ,OFF,,,,24,G23
+t3b,BC,t3b,,,,,,,,,,,,,,,INL,,transient ,OFF,,,,31,G25
+t4,BC,t4,,,,,,,,,,,,,,,INL,,transient ,OFF,,,,47,G29
+t5t,BC,t5t,,,,,,,,,,,,,,,INL,,sustained,ON,,,,96,G51
+t5i,BC,t5i,,,,,,,,,,,,,,,INL,,sustained,ON,,,,38,
+t5o,BC,t5o,,,,,,,,,,,,,,,INL,,sustained,ON,,,,96,
+XBC,BC,XBC,,,,,,,,,,,,,,,INL,,sustained,ON,,,,18,G62
+t6,BC,t6,,,,,,,,,,,,,,,INL,,sustained,ON,,,,133,G63
+t7,BC,t7,,,,,,,,,,,,,,,INL,,sustained,ON,,,,67,G79
+t8,BC,t8,,,,,,,,,,,,,,,INL,,sustained,ON,,,,20,G82
+t9,BC,t9,,,,,,,,,,,,,,,INL,,sustained,ON,,,,12,G84
+RBC,BC,RBC,,,,,,,,,,,,,,,INL,,sustained,ON,,,,158,G93
+NBC,BC,NBC,,,Non-canonical OFF strat mGluR6+ ON BC,,,,,,,,,,,,INL,,,,,,,6,
+GluMi,BC,GluMi,,,,,"Santina et al., 2016",,,,,,,,,,INL,,,,,,,,
+Horizontal cell,HC,HC,,,,,,,,,,,,,,,INL,,,,,,,,
+Müller cell,Glia,Müller,,,,,,,,,,,,,,,,,,,,,,,
+Astrocyte,Glia,Astro,,,,,,,,,,,,,,,,,,,,,,,
+Microglia,Glia,mGlia,,,,,,,,,,,,,,,,,,,,,,,
+Endothelial cell ,Vascular,Endo,,,,,,,,,,,,,,,,,,,,,,,
+Pericyte,Vascular,Peri,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+"Helmstaedter AC types (grey is assigned to type on the lis, white to be added)",,,,,,,,,,,,,,,,,,,,,,,,,
+H24,,,,,A2,,,,,,,,,,,,,,,,,,,,
+A8,,,H42? or H18/H20,,,,"Lee et al., 2016",,,,,,medium ,,,,INL,,,ON-OFF,,,,,
+H25,,,DAC,,WF1,,MacNeil & Masland 1999,,,,,,medium ,,,,INL,,,,,,,,
+H26,,,,,,,,,,,,,medium ,,,,INL,,,OFF,,,,,
+H27,,,,,,,,,,,,,medium ,,,,GCL,,,OFF,,,,,
+H28,,,,,,non-dosplaced bowtie ,,,,,,,wide,elongated,straight,sparse,INL,,,,,,,,
+H29,,,,,,,,,,,,,medium ,,,,INL,,,OFF,,,,,
+H30,,,,,,,,,,,,,medium ,,,,INL,,,OFF,,,,,
+H31,,,,,WF1,,,,,,,,,,,,,,,,,,,,
+H32,,,,,,monostratified layered,7,no,medium,symmetric,straight/ knotty,dense ,,,,,,,,,,,,,
+H33,,,,,OFF SAC,,,,,,,,,,,,,,,,,,,,
+H34,,,,,interplexiform ?,,,,,,,,medium ,,,,INL,,,ON-OFF,,,,,
+H35,,,,,,,,,,diffuse,,,medium ,,,,INL,,,ON-OFF,,,,,
+H36,,,,,,,,,,tristratified,,,medium ,,,,INL,,,ON-OFF,,,,,
+H37,,,,,,Wide-field mid IPL or nNOS2,,,,,,,,,,,,,,,,,,,
+H38,,,,,,,MacNeil & Masland 1999,,,Diffuse multistratified,,,medium ,,,,INL,,,ON-OFF,,,,,
+H39,,,,,WF3,,MacNeil & Masland 1999,,,,,,medium ,,,,INL,,,ON,,,,,
+H40,,,,,VIP1/ VIPm,,,,,bistratified,,,medium ,,,,INL,,,ON,,,,,
+H41,,,,,,Wide-field mid IPL or nNOS2,,,,,,,medium ,,,,INL,,,,,,,,
+H42,,,,,,,,,,,,,,,,,INL,,,,,,,,
+H43,,,,,,MF mid-IPL smooth ,,,,,,,medium ,,,,GCL,,,ON,,,,,
+H44,,,,,"Fountain, bigger H18 ",,MacNeil & Masland 1999,,,,,,medium ,,,,INL,,,ON-OFF,,,,,
+H45,,,,,,,,,,bistratifed diffuse,1,,wide,symmetric,wavy,"dense in center, outer sparse",INL,,,,,,,,one example found
+H46,,,,,"vGlut3, Narrow s3",non-dosplaced MF mid-IPL varicose,MacNeil & Masland 1999,,,,,,medium ,,,,INL,,,ON,,,,,
+H47,,,,,,non-displaced nNOS-2 ,,,,monostratified layered,3,no,wide,elongated,straight,sparse,INL,,,ON,,,,,
+H48,,,,,"vGlut3, AB broad diffuse",,MacNeil & Masland 1999,,,,,,medium ,,,,INL,,,ON,,,,,
+H49,,,,,A17,,,,,,,,,,,,,,,,,,,,
+H50,,,,,VIP2,non-displaced hugging ON ChAT,,,,monostratified layered,2,unclear,medium ,,,,INL,,,ON,,,,,
+H51,,,,,ON SAC,,,,,,,,,,,,,,,,,,,,
+H52,,,,,,,,,,bistratified,,,medium ,,,,INL,,,ON,,,,,
+H53,,,,,,non-displaced non-spinky sparse stratifying,,,,monostratified,2,unclear,wide,unclear,long straight,sparse,INL,,,ON,,,,,
+H54,,,,,WF4,non-displaced SAD stratifying,MacNeil & Masland 1999,,,monostratified,1,yes,wide,asymmetric,"many short branchy, few long straight","dense in center, outer sparce",INL,,,,,,,,
+H55,,,,,MF low in IPL transient/sustained,,,,weakly bistatified,,,,medium ,,,,GCL,,,ON,,,,,
+H56,,,,,,Wide-field ON non-spiny dense,,,,,,,medium ,,,,GCL,,,ON,,,,,
+H57,,,,,,SAD,,,,,,,medium ,,,,GCL,,,ON,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+Other Types  (to be added),,,,,,,,,,,,,,,,,,,,,,,,,
+VIPm-RAC2,,,H40,,,,from David,,,bistratified,,,,,,,,,,,,,,,
+RAC2,,,,,"just a few branches that go into the inner ON, otherwise very similar to VIPm-RAC2",,from David,,,,,,,,,,,,,,,,,,
+nGnG,,,,,,,"Kay et al., 2011",,,,,,,,,,,,,,,,,,
+WA1-5,,,,,,,Lin & Masland 2006,,,,,,,,,,,,,,,,,,
+B/K AC (and subtypes),,,,,,,"Park et al., 2024",,,,,,,,,,,,,,,,,,
+bifid/waterfall/.. ; cluster1-8,,,,,,,"Badea & Nathans, 2004",,,,,,,,,,,,,,,,,,
+interplexiform,,,H34,,,,"Dedek et al., 2009",,,,,,,,,,,,,,,,,,
+CA1,,,,,,,"Yan et al., 2020",,,,,,,,,,,,,,,,,,
+CA2,,,,,,,"Yan et al., 2020",,,,,,,,,,,,,,,,,,
+polyaxonal ?,,,,,"SAD, A1 ",,"Voegly et al, 2001",,,,,,,,,,,,,,,,,,
+VG3,,,,,,,"Yan et al., 2020",,,,,,,,,,,,,,,,,,
+VIP3,,,,,MF low in IPL transient ?,,"Perez de Sevilla Mueller et al., 2019",,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+NEW EW II TYPES,,,,,,,,,,,,,,,,,,,,,,,,,
+SAD medium,,,,,,,,,,,,,,,,,,,,,,,,,
+SAD large,,,,,,,,,,,,,,,,,,,,,,,,,
+SAD giant,,,,,,,,,,,,,,,,,,,,,,,,,
+deeply SAD,,,,,,,,,,,,,,,,,,,,,,,,,
+non-displaced MF low in IPL ,,,,,,,,,,monostratified diffuse,2,no,medium,symmetric,wavy,dense,INL,,,,,,,,
+non-displaced nNOS-2,,,,,,,,,,,,,,,,,,,,,,,,,
+H32,,,,,,non-displaced MF deep in IPL ,,,,monostratified layered,7,no,medium,symmetric,straight/ knotty,dense ,,,,,,,,,
+nNos-1,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+example found ,,,,,,,,,,,,,,,,,,,,,,,,,
+new match for existing types (literature or Julia),,,,,,,,,,,,,,,,,,,,,,,,,
+confirmed match,,,,,,,,,,,,,,,,,,,,,,,,,
+new type ,,,,,,,,,,,,,,,,,,,,,,,,,
