@@ -2,3 +2,9 @@ root: "../data"
 skel_dir:  "../data/swc"
 version: "2026-05-15-15h"
 file_prefix: "df_all_neurons_"
+
+version_rb: "2026-05-28-11h"
+file_prefix_rb: "df_ribbons_"
+
+file_prefix_rbc_celltypes: "fig8_df_rbc_celltype_"
+file_prefix_rbc_synapses: "fig8_df_rbc_synapse_"

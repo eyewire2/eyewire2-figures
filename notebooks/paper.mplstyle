@@ -1,0 +1,35 @@
+# =========================
+# Fonts
+# =========================
+# font.family        : sans-serif
+# font.sans-serif    : Arial
+# font.size          : 12
+
+axes.titlesize     : 12
+axes.labelsize     : 12
+xtick.labelsize    : 12
+ytick.labelsize    : 12
+legend.fontsize    : 12
+
+# =========================
+# Figure
+# =========================
+figure.dpi         : 300
+savefig.dpi        : 300
+savefig.bbox       : tight
+savefig.pad_inches : 0.02
+
+
+
+# =========================
+# Lines
+# =========================
+lines.linewidth    : 1
+lines.markersize   : 4
+
+# =========================
+# Legend
+# =========================
+legend.frameon     : False
+legend.loc         : best
+

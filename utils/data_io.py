@@ -12,13 +12,23 @@ def get_data_config(config_path="data_config.yaml"):
     return config
 
 
-def get_file_path(config):
+def get_file_path(config, version = "version", file_prefix = "file_prefix"):
     """Construct the file path for the dataset based on the configuration."""
     root = config.get("root", "../data")
-    version = config.get("version", "2026-05-15-15h")
-    file_prefix = config.get("file_prefix", "df_all_neurons_")
+    version = config.get(version, "2026-05-15-15h")
+    file_prefix = config.get(file_prefix, "df_all_neurons_")
     file_path = os.path.abspath(os.path.join(root, f"{file_prefix}{version}.parquet"))
     return file_path
+
+
+
+# def get_file_path_ribbons(config):
+#     """Construct the file path for the dataset based on the configuration."""
+#     root = config.get("root", "../data")
+#     version = config.get("version_rb", "2026-05-28-11h")
+#     file_prefix = config.get("file_prefix_rb", "df_ribbons_")
+#     file_path = os.path.abspath(os.path.join(root, f"{file_prefix}{version}.parquet"))
+#     return file_path
 
 
 def serialize_numpy_arrays(df):
