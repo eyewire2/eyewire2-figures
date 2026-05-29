@@ -14,7 +14,7 @@ uv sync
 
 ## Data
 
-Download the data from: https://huggingface.co/datasets/eulerlab/eyewire2-data/tree/main and copy it to [data](./data).
+Download the data from: https://huggingface.co/datasets/eulerlab/eyewire2-data/tree/main and copy it to [data](./data). Some notebooks will require that you unpack a zip file first (see [data](./data/README.md)).
 
 # Notebooks
 
