@@ -16,7 +16,7 @@ uv sync
 
 Download the data from: https://huggingface.co/datasets/eulerlab/eyewire2-data/tree/main and copy it to [data](./data). Some notebooks will require that you unpack a zip file first (see [data README](./data/README.md)). 
 
-All functional response data can be found [here](ttps://github.com/eyewire2/eyewire2-functional-analysis).
+All functional response data can be found [here](https://github.com/eyewire2/eyewire2-functional-analysis).
 
 # Notebooks
 
