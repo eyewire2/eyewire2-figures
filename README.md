@@ -16,6 +16,7 @@ Eyewire II-A connectomic resource for resolving cell types and circuits of the m
 ## Setup
 
 Clone this repository, then follow the steps below.
+The code has been tested on Ubuntu 24.04.3 LTS and Windows 11 Pro.
 
 ### Python
 
@@ -27,12 +28,15 @@ uv sync
 
 Alternatively, set up the environment from [requirements.txt](requirements.txt).
 
+With uv, the install time is only a few seconds.
+
 ### Data
 
 1. Download the data from [huggingface.co/datasets/eulerlab/eyewire2-data](https://huggingface.co/datasets/eulerlab/eyewire2-data/tree/main).
 2. Copy all parquet files to [data/](data/).
-3. Unpack `swc-examples.zip` and copy all `.swc` files to [data/swc/](data/swc/). This archive contains all skeletons shown in the figures.
-4. *(Optional)* Unpack `swc.zip` to get the skeletons for all cells used in the paper. This is not required to reproduce the figures.
+3. Unpack `track_proofreading.zip` to [data/track_proofreading/](data/track_proofreading/).
+4. Unpack `swc-examples.zip` and copy all `.swc` files to [data/swc/](data/swc/). This archive contains all skeletons shown in the figures.
+5. *(Optional)* Unpack `swc.zip` to get the skeletons for all cells used in the paper. This is not required to reproduce the figures.
 
 The resulting directory structure should look like:
 
