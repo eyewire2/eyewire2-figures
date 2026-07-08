@@ -1,3 +1,4 @@
+image_root: "../images"
 root: "../data"
 skel_dir:  "../data/swc"
 version: "2026-05-15-15h"

@@ -66,9 +66,14 @@ uv run --with jupyter jupyter lab
 | [plot_cellclass_embedding.ipynb](notebooks/plot_cellclass_embedding.ipynb) | Figure 3: Examples and embedding of all neurons |
 | [plot_BCs.ipynb](notebooks/plot_BCs.ipynb) | Figure 4: Bipolar cell types: examples, embeddings and mosaics |
 | [plot_RGCs.ipynb](notebooks/plot_RGCs.ipynb) | Figure 5: Retinal ganglion cell types: examples and mosaics |
+| [plot_RGC_mapping.ipynb](notebooks/plot_RGC_mapping.ipynb) | Figure 6 panel A-G: Mapping from EM to 2p of example RGC |
+| [plot_RGC_examples.ipynb](notebooks/plot_RGC_examples.ipynb) | Figure 6 panel H, I: Retinal ganglion cell example type responses |
+| [plot_response_overview.ipynb](notebooks/plot_response_overview.ipynb) | Figure 6 panel J: Overview of all functional responses |
+| [plot_SACs.ipynb](notebooks/plot_SACs.ipynb) | Figure 7 A, B: Starburst amacrine cells: examples and mosaics |
 | [plot_rbccircuit_examples.ipynb](notebooks/plot_rbccircuit_examples.ipynb) | Figure 8: Rod bipolar cell circuit cell examples |
 | [plot_rbcciruit_fig8_panelD.ipynb](notebooks/plot_rbcciruit_fig8_panelD.ipynb) | Figure 8 panel D: Rod bipolar cell circuit analysis |
 | [plot_ribbons_fig8_panelF.ipynb](notebooks/plot_ribbons_fig8_panelF.ipynb) | Figure 8 panel F: ribbons per BC type |
 | [plot_ribbons_fig8_panelG.ipynb](notebooks/plot_ribbons_fig8_panelG.ipynb) | Figure 8 panel G: ribbons in the IPL |
 
-For all analyses and plots related to functional responses, refer to the notebooks in [this folder](https://github.com/eyewire2/eyewire2-functional-analysis/tree/main/notebooks/analysis/manuscript) in our separate repository for functional data.
+
+For all deeper analyses of functional responses, refer to the notebooks in [this folder](https://github.com/eyewire2/eyewire2-functional-analysis/tree/main/notebooks/analysis/) in our separate repository for functional data.

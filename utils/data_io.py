@@ -58,7 +58,7 @@ def serialize_numpy_arrays(df):
     return df_serialized
 
 
-def restore_numpy_arrays(df):
+def restore_numpy_arrays(df, verbose=False):
     """Automatically detect and restore numpy arrays from nested structures."""
     df_restored = df.copy()
 
@@ -115,7 +115,8 @@ def restore_numpy_arrays(df):
             if len(sample_non_null) > 0:
                 first_val = sample_non_null.iloc[0]
                 if is_nested_array_structure(first_val):
-                    print(f"Restoring numpy arrays in column: {col}")
+                    if verbose:
+                        print(f"Restoring numpy arrays in column: {col}")
                     df_restored[col] = [convert_to_numpy_array(x) for x in df_restored[col]]
 
     return df_restored
