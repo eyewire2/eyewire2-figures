@@ -5,8 +5,17 @@ import pandas as pd
 import yaml
 
 
-def get_data_config(config_path="data_config.yaml"):
-    """Load data configuration from a YAML file."""
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_CONFIG_PATH = os.path.join(REPO_ROOT, "data_config.yaml")
+
+
+def get_data_config(config_path=DEFAULT_CONFIG_PATH):
+    """Load data configuration from a YAML file.
+
+    Defaults to ``data_config.yaml`` at the repo root, resolved from this
+    module's location rather than the caller's working directory, so it is
+    found regardless of which notebook/cwd calls this.
+    """
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
     return config
@@ -14,7 +23,7 @@ def get_data_config(config_path="data_config.yaml"):
 
 def get_file_path(config, version = "version", file_prefix = "file_prefix"):
     """Construct the file path for the dataset based on the configuration."""
-    root = config.get("root", "../data")
+    root = config.get("dataframes_dir", "../data")
     version = config.get(version, "2026-05-15-15h")
     file_prefix = config.get(file_prefix, "df_all_neurons_")
     file_path = os.path.abspath(os.path.join(root, f"{file_prefix}{version}.parquet"))

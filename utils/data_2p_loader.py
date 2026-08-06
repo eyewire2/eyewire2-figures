@@ -4,16 +4,15 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-from data_io import restore_numpy_arrays
+from data_io import get_data_config, restore_numpy_arrays
 
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-DATA_ROOT = os.path.join(HERE, "..", "data")
-DATA_2P = os.path.join(DATA_ROOT, "data-2p")
-DATA_SS = os.path.join(DATA_ROOT, "spreadsheets")
+_config = get_data_config()
+DATA_2P = _config["data_2p_dir"]
+DATA_SS = _config["spreadsheet_dir"]
 
-MAIN_ALL_CELLS_SHEET = 'Eyewire II Proofread Cells Main List - All Cells 2026-05-09b-resource-paper-v2.csv'
-MAP_SHEET = "Eyewire II Proofread Cells Main List - EM-2p-mapping 2026-07-08e v2-final.csv"
+MAIN_ALL_CELLS_SHEET = 'Eyewire II Proofread Cells Main List - All Cells 2026-08-06.csv'
+MAP_SHEET = "Eyewire II Proofread Cells Main List - EM-2p-mapping 2026-08-06.csv"
 
 
 def load_parquet_df(filepath):
