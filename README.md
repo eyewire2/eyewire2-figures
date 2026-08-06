@@ -32,23 +32,30 @@ With uv, the install time is only a few seconds.
 
 ### Data
 
+This repo does not keep its own copy of the data — it reads from a single shared `eyewire2-data` folder that is also used by [eyewire2-functional-analysis](https://github.com/eyewire2/eyewire2-functional-analysis), so both repos stay in sync with one download.
+
 1. Download the data from [huggingface.co/datasets/eulerlab/eyewire2-data](https://huggingface.co/datasets/eulerlab/eyewire2-data/tree/main).
-2. Copy all parquet files to [data/](data/).
-3. Unpack `track_proofreading.zip` to [data/track_proofreading/](data/track_proofreading/).
-4. Unpack `swc-examples.zip` and copy all `.swc` files to [data/swc/](data/swc/). This archive contains all skeletons shown in the figures.
+2. Place it in a folder named `eyewire2-data`. By default, [data_config.yaml](data_config.yaml) expects it at `../huggingface/eyewire2-data` relative to this repo's root — i.e. inside a `huggingface/` folder that sits next to this repo (and next to `eyewire2-functional-analysis`), laid out like:
+
+    ```text
+    <parent>/
+    ├── eyewire2-figures/            <- this repo
+    ├── eyewire2-functional-analysis/
+    └── huggingface/
+        └── eyewire2-data/
+            ├── data-2p/
+            ├── images/
+            ├── spreadsheets/
+            ├── swc/
+            └── ...
+    ```
+
+3. Unpack `track_proofreading.zip` to `eyewire2-data/track_proofreading/`.
+4. Unpack `swc-examples.zip` and copy all `.swc` files to `eyewire2-data/swc/`. This archive contains all skeletons shown in the figures.
 5. *(Optional)* Unpack `swc.zip` to get the skeletons for all cells used in the paper. This is not required to reproduce the figures.
+6. Copy the `df_all_neurons_*.parquet` (and any other top-level analysis parquet files) into `eyewire2-data/` directly.
 
-The resulting directory structure should look like:
-
-```
-data/
-├── swc/
-│   ├── 720575940537001651.swc
-│   ├── 720575940537038003.swc
-│   └── ...
-├── df_all_neurons_2026-05-15-15h.parquet
-└── ...
-```
+If your `eyewire2-data` folder lives somewhere else, update the paths in [data_config.yaml](data_config.yaml) (at the repo root) to match — every notebook loads its data paths from there via `data_io.get_data_config()`.
 
 ## Notebooks
 
