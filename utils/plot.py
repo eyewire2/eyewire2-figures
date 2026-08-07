@@ -82,43 +82,70 @@ def plot_bar(ax, row, annotate_dirs=False, annotate_symbols=False, ventral_up=Tr
 
 
 def plot_bar_dir(ax, row, ventral_up=True, lw=1):
-    """Plot the directional tuning curve (polar plot) derived from moving-bar snippets.
+    """Plot the moving-bar direction-tuning curve (mean +/- min/max across repeats) and
+    preferred-direction vector on a polar axes.
 
-    Performs SVD-based decomposition to extract the direction component and renders
-    it on a polar axes with cardinal direction labels.
+    Derives the direction-tuning curve by projecting each individual repeat (not just
+    the direction-average) onto the SVD time kernel of the direction-average response,
+    then combines it with the fitted preferred-direction vector (`row['bar_pref_dir']`,
+    `row['bar_ds_index']`).
 
     Args:
         ax: Matplotlib polar Axes to plot on.
-        row: DataFrame row containing ``'bar_snippets'`` and ``'bar_snippets_dt'``.
+        row: DataFrame row containing ``'bar_snippets'``, ``'bar_snippets_dt'``,
+            ``'bar_pref_dir'``, and ``'bar_ds_index'``.
         ventral_up: Determines the arrow-symbol convention for direction tick labels.
         lw: Line width for the tuning curve.
 
     Raises:
-        ValueError: If ``bar_snippets`` or the derived ``dir_component`` contain
+        ValueError: If ``bar_snippets`` or the projected per-repeat responses contain
             non-finite values.
     """
     if np.any(~np.isfinite(row['bar_snippets'])):
         raise ValueError('bar_snippets not finite')
 
-    sorted_directions, sorted_responses, sorted_averages = preprocess_mb_snippets(snippets=row['bar_snippets'])
-    time_component, dir_component = get_time_dir_kernels(sorted_averages, dt=row['bar_snippets_dt'])
-    sorted_directions = np.append(sorted_directions, sorted_directions[0])
-    dir_component = np.append(dir_component, dir_component[0])
+    sorted_directions_rad, sorted_responses, avg_sorted_resp = preprocess_mb_snippets(snippets=row['bar_snippets'])
+    time_component, _ = get_time_dir_kernels(avg_sorted_resp, dt=row['bar_snippets_dt'])
 
-    if np.any(~np.isfinite(dir_component)):
-        raise ValueError('dir_component not finite')
-    
-    ax.plot(sorted_directions, np.clip(dir_component, 0, None), color='black', lw=lw)
-    
+    t, d, r = sorted_responses.shape
+    projected = np.reshape(np.reshape(sorted_responses, (t, d * r)).T @ time_component, (d, r))
+    mean_resp = np.mean(projected, axis=-1)
+    min_resp = np.min(projected, axis=-1)
+    max_resp = np.max(projected, axis=-1)
+
+    if np.any(~np.isfinite(projected)):
+        raise ValueError('projected response not finite')
+
     ax.set_theta_zero_location('N')
     ax.set_theta_direction(-1)
-    
+
+    theta = np.append(sorted_directions_rad, sorted_directions_rad[0])
+    mean_closed = np.append(mean_resp, mean_resp[0])
+    min_closed = np.append(min_resp, min_resp[0])
+    max_closed = np.append(max_resp, max_resp[0])
+
+    temp = np.max(np.abs(np.concatenate([mean_resp, min_resp, max_resp])))
+
+    r_min = float(np.min(min_resp))
+    if r_min < 0:
+        # r=0 no longer sits at the plot center once rorigin is negative, so draw it explicitly
+        ax.set_rorigin(r_min * 1.1)
+        theta_circle = np.linspace(0, 2 * np.pi, 200)
+        ax.plot(theta_circle, np.zeros_like(theta_circle), color='gray', linestyle='--', linewidth=1)
+    else:
+        ax.set_rmin(0)
+
+    ax.plot([row['bar_pref_dir'], row['bar_pref_dir']], [0, row['bar_ds_index'] * temp], color='k')
+    ax.fill_between(theta, min_closed, max_closed, color='red', alpha=0.3)
+    ax.plot(theta, mean_closed, color='red', lw=lw)
+
     ax.xaxis.set_tick_params(pad=-20)
     dirs = [0, 90, 180, 270]
     mb_symbols = MB_DIRS_SYMBOLS_V_UP if ventral_up else MB_DIRS_SYMBOLS_D_UP
 
-    ax.set(xlabel=None, ylabel=None, yticks=[0, np.max(dir_component)])
-    ax.set_ylim(0, np.max(dir_component))
+    ylim_min = r_min * 1.1 if r_min < 0 else 0
+    ax.set(xlabel=None, ylabel=None, yticks=[0, temp])
+    ax.set_ylim(ylim_min, temp)
     ax.set_xticks(np.deg2rad(dirs))
     ax.set_xticklabels([mb_symbols[np.argmax(np.array(MB_DIRS) == d)] for d in dirs],
                        fontsize=10, fontweight='bold', fontname='DejaVu Sans', color='#999999')
