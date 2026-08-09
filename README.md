@@ -20,7 +20,7 @@ The code has been tested on Ubuntu 24.04.3 LTS and Windows 11 Pro.
 
 ### Python
 
-Requires Python 3.13. If you have [uv](https://docs.astral.sh/uv/getting-started/installation/) installed, run:
+Requires Python (e.g. 3.13). If you have [uv](https://docs.astral.sh/uv/getting-started/installation/) installed, run:
 
 ```bash
 uv sync
@@ -53,7 +53,6 @@ This repo does not keep its own copy of the data — it reads from a single shar
 3. Unpack `track_proofreading.zip` to `eyewire2-data/track_proofreading/`.
 4. Unpack `swc-examples.zip` and copy all `.swc` files to `eyewire2-data/swc/`. This archive contains all skeletons shown in the figures.
 5. *(Optional)* Unpack `swc.zip` to get the skeletons for all cells used in the paper. This is not required to reproduce the figures.
-6. Copy the `df_all_neurons_*.parquet` (and any other top-level analysis parquet files) into `eyewire2-data/` directly.
 
 If your `eyewire2-data` folder lives somewhere else, update the paths in [data_config.yaml](data_config.yaml) (at the repo root) to match — every notebook loads its data paths from there via `data_io.get_data_config()`.
 
