@@ -5,7 +5,7 @@ image_root: "../../huggingface/eyewire2-data/images"
 data_2p_dir: "../../huggingface/eyewire2-data/data-2p"
 spreadsheet_dir: "../../huggingface/eyewire2-data/spreadsheets"
 track_proofreading_dir: "../../huggingface/eyewire2-data/track_proofreading/track_proofreading/changelogs_csv"
-version: "2026-05-15-15h"
+version: "2026-08-11-18h"
 file_prefix: "df_all_neurons_"
 
 version_ribbons: "2026-07-22-11h"
