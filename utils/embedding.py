@@ -132,7 +132,7 @@ def plot_embedding(
 
     x = df[tsne_x_col].values
     y = df[tsne_y_col].values
-    labels = df[celltype_col]
+    labels = df[celltype_col].values
     is_labelled = df[is_labelled_col].values
     label_order = np.asarray(plot_order)
 
@@ -179,7 +179,7 @@ def plot_embedding(
     if annotate:
         texts = []
         for label in label_order:
-            is_ct = (labels == label).values
+            is_ct = labels == label
             if not np.any(is_ct):
                 continue
             emb_ct = np.stack([x[is_ct], y[is_ct]]).T
