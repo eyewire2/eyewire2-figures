@@ -5,9 +5,9 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.19.4
+#       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: eyewire2-functional-analysis
+#     display_name: eyewire2-figures (3.13.3.final.0)
 #     language: python
 #     name: python3
 # ---
@@ -15,7 +15,7 @@
 # %% [markdown]
 # # Recording log from QDSpy log and `smh` headers
 #
-# This notebook read and parses a stimulus log file (`QDSpy.ini`) and the ScanM header files (`*.smh`) and writes thie contained information in pandas DataFrames as well as `.csv` files for further processing.
+# This notebook demonstrates how to read and parses a stimulus log file (`QDSpy.ini`) and the ScanM header files (`*.smh`) and writes thie contained information in pandas DataFrames as well as `.csv` files for further processing.
 
 # %%
 # %load_ext autoreload
@@ -32,7 +32,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.getcwd()
 sys.path.append(HERE)
 sys.path.append(os.path.join(HERE, "..", "..", "utils"))
 from stim_utils.scanm.scanm_smp import SMP
@@ -292,7 +292,7 @@ df['t_seconds'] = df['time'].apply(time_to_seconds)
 # drop invalid rows
 df_plot = df.dropna(subset=['x', 'y', 't_seconds']).copy()
 
-fig, ax = plt.subplots(figsize=(7,7))
+fig, ax = plt.subplots(figsize=(5,5))
 sc = ax.scatter(df_plot['x'], df_plot['y'], c=df_plot['t_seconds'], cmap='viridis', s=50, edgecolor='k', lw=0.3)
 cbar = fig.colorbar(sc, ax=ax)
 
@@ -311,5 +311,3 @@ ax.set_adjustable('box')
 
 plt.savefig(os.path.join(FIG_DIR, 'smh_positions_by_time.pdf'))
 plt.show()
-
-# %%

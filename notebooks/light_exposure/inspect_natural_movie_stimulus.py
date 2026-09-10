@@ -5,15 +5,15 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.19.4
+#       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: eyewire2-figures (3.13.3.final.0)
 #     language: python
 #     name: python3
 # ---
 
 # %% [markdown]
-# # Natural Stimulus Explanation
+# # Inspect Natural Movie Stimulus
 
 # %%
 from typing import Any
@@ -40,7 +40,7 @@ print(f"{stimuli_dict.keys()=}")
 # %% [markdown]
 # It contains both the training movie and the test movie. 
 # Both movies consist of two channels (green and UV), each frame is shown at 30HZ, and the spatial dimensions are 72x64.
-# See [Qiu et al. 2021](https://www.sciencedirect.com/science/article/pii/S096098222100676X) to learn how this video was recorded, and [Höfling et al. 2024](https://elifesciences.org/articles/86860)to see how this stimulus was used for neural network training.
+# See [Qiu et al. 2021](https://www.sciencedirect.com/science/article/pii/S096098222100676X) to learn how this video was recorded, and [Höfling et al. 2024](https://elifesciences.org/articles/86860) to see how this stimulus was used for neural network training.
 #
 # The shape of both stimuli are (input_channel, time, height, width):
 
@@ -92,7 +92,7 @@ print(f"{first_clip_shown.shape=}")
 # You can reconstruct the full movie for the scan_sequence_id 14 as follows using the function create_displayed_movie_sequence:
 
 # %%
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.getcwd())
 from stim_utils.stimulus.stimulus_tools import create_displayed_movie_sequence
 
 full_movie = create_displayed_movie_sequence(stimuli_dict["train"], stimuli_dict["test"], 
@@ -103,18 +103,11 @@ print(f"{full_movie.shape=}")
 # Or you use the code provided in the src directory:
 
 # %% [markdown]
-# ## Visulize movie as a video
+# ## Visualize movie as a video
 
 # %% [markdown]
-# If you are interested to see this movie as a video you can install [openretina](https://github.com/open-retina/open-retina) which provides a useful visualization tool. The UV component is mapped to violet there and the green component to green. Therefore, first install openretina and then play the video in the notebook:
-
-# %%
-# !pip install openretina
+# If you are interested to see this movie as a video you can install [openretina](https://github.com/open-retina/open-retina) which provides a useful visualization tool. The UV component is mapped to violet there and the green component to green. After you installed open retina (`uv pip install openretina`) you can play the video in the notebook.
 
 # %%
 from openretina.utils.plotting import numpy_to_mp4_video
-
-# %%
 numpy_to_mp4_video(full_movie, fps=30, display_video=True)
-
-# %%
