@@ -511,11 +511,16 @@ df = pd.read_parquet(file_path)
 # %%time
 # extract bipolar cells from teh dataframe
 bc_df_ = df.query('cellclass_final == "BC"')
-bc_df_ = bc_df_[["celltype_final", "ribbon_ipl_count", "ribbon_size"]]
+bc_df_ = bc_df_[["celltype_final", "ribbon_IPL_count", "ribbon_mean_size"]]
 bc_df_ = bc_df_.rename(columns = {"celltype_final": "cell_type",
-                               "ribbon_ipl_count" : "count",
-                               "ribbon_size": "size"})
+                               "ribbon_IPL_count" : "count",
+                               "ribbon_mean_size": "size"})
 bc_df_ = bc_df_.astype({'size': float, "count": int})
+
+# ribbon_mean_size now ships in voxels (16x16x40 nm^3/voxel) instead of um^3 -- convert
+# back to um^3 to match the figure's expected scale.
+bc_df_['size'] = bc_df_['size'] * (16 * 16 * 40 / 1e9)
+
 bc_df_.reset_index(inplace = True)
 
 # %%

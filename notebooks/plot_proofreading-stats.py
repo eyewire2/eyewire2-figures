@@ -47,15 +47,19 @@ os.makedirs(fig_dir, exist_ok=True)
 # %%time
 df_all = pd.read_parquet(file_path)
 
-#merge status columns
-df_all.loc[~df_all.Status.isna(),'status'] = df_all.Status[~df_all.Status.isna()]
+#merge status columns (older exports had a separate 'Status' column to merge in; recent
+#exports already consolidate everything into 'status')
+if 'Status' in df_all.columns:
+    df_all.loc[~df_all.Status.isna(),'status'] = df_all.Status[~df_all.Status.isna()]
 print(sum(df_all.status.isin(['Complete', 'Complete (cut off)'])),'proofread cells')
 
-#merge row column
-df_all.loc[:,'row_merged'] = None
-is_bcsheet = df_all['row'].isna()
-df_all.loc[is_bcsheet,'row_merged'] = df_all.loc[is_bcsheet,'Index BC Sheet']
-df_all.loc[~is_bcsheet,'row_merged'] = df_all.loc[~is_bcsheet,'row']
+#merge row column (older exports had separate 'row'/'Index BC Sheet' columns to merge;
+#recent exports no longer have either -- skip if so)
+if 'row' in df_all.columns and 'Index BC Sheet' in df_all.columns:
+    df_all.loc[:,'row_merged'] = None
+    is_bcsheet = df_all['row'].isna()
+    df_all.loc[is_bcsheet,'row_merged'] = df_all.loc[is_bcsheet,'Index BC Sheet']
+    df_all.loc[~is_bcsheet,'row_merged'] = df_all.loc[~is_bcsheet,'row']
 
 ## subset to proofread
 df_proofread = df_all[df_all.status.isin(['Complete', 'Complete (cut off)'])].copy()
@@ -71,7 +75,7 @@ def match_csv_files(df: pd.DataFrame, directory: str) -> pd.DataFrame:
         #for all csvs with exactly 5 parts in the filename
         if f.endswith(".csv") and (parts := f.split("_")) and len(parts) == 5:
             #if ID (=parts[3]) is not yet in dict, add the path. otherwise ignore
-            id_to_file.setdefault(parts[3], os.path.join(directory, f))
+            id_to_file.setdefault(int(parts[3]), os.path.join(directory, f))
     #mat back to DF based on index=ID
     df["changelog_path"] = df.index.map(id_to_file)
     return df
@@ -153,7 +157,7 @@ logdicts=[]
 datadicts=[]
 for p in df_proofread.changelog_path:
     fname = os.path.splitext(os.path.basename(p))[0]
-    cell = fname.split('_')[3]
+    cell = int(fname.split('_')[3])
     row = fname.split('_')[4]
     changelog_df = pd.read_csv(p)
 

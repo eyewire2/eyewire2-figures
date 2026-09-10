@@ -89,6 +89,14 @@ example_cell = {
 }
 
 # %%
+try:
+    sys.path.append("../dev")
+    from skel_sync import sync_skeletons
+    sync_skeletons([example_cell['seg_id']], skel_dir)
+except ImportError:
+    pass  # dev-only helper, not present outside this machine; swc-examples.zip should already cover this
+
+# %%
 import skeliner as sk
 
 skel = sk.io.load_swc(os.path.join(skel_dir, f"{example_cell['seg_id']}.swc"))

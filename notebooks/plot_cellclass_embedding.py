@@ -358,7 +358,7 @@ plot_examples(celltype, rows, color=colors.cellclass2color[celltype], df=df)
 
 # %%
 # %%time
-prefer_bcs = (df['status'] == 'ok') & (df['status_alt'] == 'yes') & (df['perc_z_098'] > 30)
+prefer_bcs = (df['status_alt'] == 'ok')
 
 # %%
 # %%time
@@ -404,13 +404,13 @@ plot_examples(celltype, rows, color=colors.cellclass2color['AC'], df=df)
 
 # %%
 # %%time
-celltype = 'A17 - large'
+celltype = 'A17 large'
 rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
 plot_examples(celltype, rows, color=colors.cellclass2color['AC'], df=df)
 
 # %%
 # %%time
-celltype = 'A17 - small'
+celltype = 'A17 small'
 rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
 plot_examples(celltype, rows, color=colors.cellclass2color['AC'], df=df)
 
@@ -451,7 +451,7 @@ plt.show()
 # %%time
 max_val = 7
 
-celltypes = ['F-mini-ON', 'A2', 'H22', 'H23', 'ON SAC', 'OFF SAC', 'A17', 'XBC', 't7']
+celltypes = ['F-mini-ON', 'A2', 'H22', 'H23', 'ON SAC', 'OFF SAC', 'A17 large', 'XBC', 't7']
 marker_sizes = [1.2] * len(celltypes)
 ncols = len(celltypes)
 
@@ -529,7 +529,7 @@ xy3 = np.array((43642, 42456)) * 16 / 1000
 
 # %%
 # %%time
-website_selection = ['A2', 'H22', 'H23', 'ON SAC', 'OFF SAC', 'A17']
+website_selection = ['A2', 'H22', 'H23', 'ON SAC', 'OFF SAC', 'A17 large']
 
 # Box center in um
 box_center = (xy0 + xy1 + xy2 + xy3) / 4

@@ -105,7 +105,7 @@ def make_vline(x, label, ax, line_kws=None, text_kws=None):
 
 # %%
 # %%time
-i_largest_rgc = '720575940551276071'
+i_largest_rgc = 720575940551276071
 df2.loc[i_largest_rgc].name
 
 # %%
@@ -114,7 +114,7 @@ df2.loc[i_largest_rgc].celltype_final
 
 # %%
 # %%time
-i_largest_ac = df2[(df2['cellclass_final'] == 'AC') & (~df2.post_has_axon) & (df2.status.isin(['Complete', 'Complete (cutoff)']))].hull_diameter.idxmax()
+i_largest_ac = df2[(df2['cellclass_final'] == 'AC') & (~df2.post_has_axon.astype(bool)) & (df2.status.isin(['Complete', 'Complete (cutoff)']))].hull_diameter.idxmax()
 df2.loc[i_largest_ac].name
 
 # %%

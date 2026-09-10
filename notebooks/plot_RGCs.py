@@ -61,6 +61,13 @@ assert os.path.isfile(file_path), file_path
 # %%
 # %%time
 df = pd.read_parquet(file_path)
+
+# soma_annot_{x,y,z}_um no longer ships in the dataset, only the raw voxel coords -- derive
+# them here using the EM voxel size (16, 16, 40 nm/voxel).
+voxel_size_nm = {'x': 16, 'y': 16, 'z': 40}
+for axis, vs in voxel_size_nm.items():
+    df[f'soma_annot_{axis}_um'] = df[f'soma_annot_{axis}_vox'] * vs / 1000
+
 print(df.shape)
 
 # %%

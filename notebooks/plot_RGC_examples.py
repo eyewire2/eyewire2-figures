@@ -77,6 +77,8 @@ import skeliner as sk
 # %%
 def plot_cells(df):
     fig, axs = plt.subplots(len(df), 5, figsize=(6, len(df) * 0.8), width_ratios=(0.9, 0.5, 1.6, 1.6, 0.6))
+    if len(df) == 1:
+        axs = axs[np.newaxis, :]
 
     for i, ax_to_replace in enumerate(axs[:, -1]):
         ax_to_replace.remove()
@@ -155,6 +157,14 @@ print(skel_dir)
 def add_skels(df):
     df = df.copy()
     df['swc_path'] = df['Latest SegID'].apply(lambda x: os.path.join(skel_dir, f"{x}.swc"))
+
+    try:
+        sys.path.append("../dev")
+        from skel_sync import sync_skeletons
+        sync_skeletons(df['swc_path'], skel_dir)
+    except ImportError:
+        pass  # dev-only helper, not present outside this machine; swc-examples.zip should already cover this
+
     df['skel'] = df.apply(lambda row: sk.io.load_swc(row['swc_path']) if os.path.isfile(row['swc_path']) else None, axis=1)
     return df
 
