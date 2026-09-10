@@ -92,7 +92,7 @@ print(f"{first_clip_shown.shape=}")
 # You can reconstruct the full movie for the scan_sequence_id 14 as follows using the function create_displayed_movie_sequence:
 
 # %%
-sys.path.append(os.getcwd())
+sys.path.append(os.path.join(os.getcwd(), "..", "..", "utils"))
 from stim_utils.stimulus.stimulus_tools import create_displayed_movie_sequence
 
 full_movie = create_displayed_movie_sequence(stimuli_dict["train"], stimuli_dict["test"], 

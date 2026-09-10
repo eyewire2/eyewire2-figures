@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: 'defaultInterpreterPath: 3.13.5.final.0'
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -40,8 +40,7 @@ import data_io
 # %%time
 import colors
 from embedding import plot_embedding, save_and_plot_feats
-from mosaics import polygon_centroid, plot_multiple_mosaics
-from dendrogram import ClusterDendrogram
+from mosaics import plot_multiple_mosaics
 from plot_cells import plot_cell_morphologies
 
 # %%
@@ -203,7 +202,6 @@ cbar.outline.set_visible(True)
 axs[1, -1].axis('off')
 
 fig.savefig(f'{fig_dir}/cellclass-z-profiles.svg', bbox_inches='tight')
-fig.savefig(f'{fig_dir}/cellclass-z-profiles.png', dpi=600, bbox_inches='tight')
 
 # %% [markdown]
 # ## TSNE
@@ -270,7 +268,6 @@ fig, axs = save_and_plot_feats(
 plt.tight_layout(h_pad=0.3)
 
 fig.savefig(f'{fig_dir}/class-tnse-features.svg', bbox_inches='tight')
-fig.savefig(f'{fig_dir}/class-tnse-features.png', dpi=600, bbox_inches='tight')
 
 
 # %% [markdown]
@@ -333,9 +330,8 @@ def plot_examples(name, rows, color, df, ):
     axs[0, 1].set_title(celltype, fontsize=8)
 
     fig.savefig(f'{fig_dir}/celltype-example_{name}.svg', dpi=600, bbox_inches='tight')
-    fig.savefig(f'{fig_dir}/celltype-example_{name}.png', dpi=600, bbox_inches='tight')
-    
-    fig2.savefig(f'{fig_dir}/celltype-example_{name}_on_tsne.png', dpi=200, bbox_inches='tight')
+
+    fig2.savefig(f'{fig_dir}/celltype-example_{name}_on_tsne.svg', bbox_inches='tight')
     
     plt.show()
 
@@ -500,7 +496,6 @@ for name, extent in {'wide': [50, 1150, 50, 1150]}.items(): # 'zoom2': [200, 300
             ax.set_title(f"{celltype}\n(n={n_cells_label})", fontsize=7)
     
     fig.savefig(f'{fig_dir}/scatter-class_{extent}.svg', dpi=600, bbox_inches='tight')
-    fig.savefig(f'{fig_dir}/scatter-class_{extent}.png', dpi=600, bbox_inches='tight')
     plt.show()
 
 # %% [markdown]

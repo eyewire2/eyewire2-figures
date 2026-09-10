@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -163,7 +163,6 @@ ax.set_ylabel('Cell count\n(ACs and RGCs only)')
 
 plt.tight_layout()
 fig.savefig(f'{fig_dir}/cell_sizes.svg', bbox_inches='tight')
-fig.savefig(f'{fig_dir}/cell_sizes.png', dpi=600, bbox_inches='tight')
 
 # %% [markdown]
 # # Counts
@@ -443,7 +442,6 @@ for i, (k, v) in enumerate(count_dict.items()):
         plot_count_dict({k: v}, ax)
 
 fig.savefig(f'{fig_dir}/cell_counts.svg', bbox_inches='tight')
-fig.savefig(f'{fig_dir}/cell_counts.png', dpi=600, bbox_inches='tight')
 
 plt.show()
 

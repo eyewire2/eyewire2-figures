@@ -33,7 +33,6 @@ import matplotlib.ticker as mticker
 import numpy as np
 
 HERE = os.getcwd()
-sys.path.append(HERE)
 sys.path.append(os.path.join(HERE, "..", "..", "utils"))
 from stim_utils.scanm.scanm_smp import SMP
 from data_io import get_data_config, REPO_ROOT
@@ -309,5 +308,5 @@ ax.grid(True)
 ax.set_aspect(1.0)
 ax.set_adjustable('box')
 
-plt.savefig(os.path.join(FIG_DIR, 'smh_positions_by_time.pdf'))
+plt.savefig(os.path.join(FIG_DIR, 'smh_positions_by_time.svg'))
 plt.show()

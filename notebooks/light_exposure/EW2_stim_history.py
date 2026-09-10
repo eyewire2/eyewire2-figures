@@ -33,8 +33,9 @@ from matplotlib import colors
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(HERE)
+sys.path.append(os.path.join(HERE, "..", "..", "utils"))
 from stim_utils.stimulus import stim_movies, stim_outlines
+from data_io import get_data_config, REPO_ROOT
 
 # %%
 FIG_DIR = os.path.join(HERE, "figures")
@@ -43,10 +44,13 @@ os.makedirs(FIG_DIR, exist_ok=True)
 # Consolidated experiment overview is repo-local data in eyewire2-functional-analysis;
 # a copy lives alongside this script so eyewire2-figures stays self-contained.
 CONSOL_PATH = Path(HERE) / "experiment-overview_consolidated.csv"
-# Full QDSpy movie-as-pickle files are not part of the shared eyewire2-data download
-# (only much smaller per-stimulus pickles are) -- place them here manually if needed.
-STIM_MOV_PATH = Path(HERE) / "stimuli-as-movies"
-STIM_MOV_EXT = ".pickle"
+
+# Get paths from `data_config.yaml` paths
+DATA_2P = (Path(REPO_ROOT) / "notebooks" / get_data_config()["data_2p_dir"]).resolve()
+
+# Use compressed .npz files for stimuli-as-movies
+STIM_MOV_EXT = ".npz"
+STIM_MOV_PATH = DATA_2P / "stimuli-as-movies"
 
 # %% [markdown]
 # ## Generate a map of the stimulus presentation
@@ -227,7 +231,7 @@ ax.grid(True, alpha=0.3)
 ax.set_aspect('equal')
 
 plt.tight_layout()
-plt.savefig(os.path.join(FIG_DIR, 'stimulus_presentation_map.pdf'))
+plt.savefig(os.path.join(FIG_DIR, 'stimulus_presentation_map.svg'))
 plt.show()
 
 # %% [markdown]
@@ -240,15 +244,15 @@ plt.show()
 
 # %%
 # Load movie files and zero blue channel
-tmp_path = Path.joinpath(STIM_MOV_PATH, "RGC_MovingBar" +STIM_MOV_EXT)
+tmp_path = Path.joinpath(STIM_MOV_PATH, "DS" +STIM_MOV_EXT)
 mov_DS = stim_movies.load_qdspy_movie(tmp_path)
 mov_DS[:,:,:,2] = 0
 
-tmp_path = Path.joinpath(STIM_MOV_PATH, "RGC_Chirp" +STIM_MOV_EXT)
+tmp_path = Path.joinpath(STIM_MOV_PATH, "Chirp" +STIM_MOV_EXT)
 mov_Chirp = stim_movies.load_qdspy_movie(tmp_path)
 mov_Chirp[:,:,:,2] = 0
 
-tmp_path = Path.joinpath(STIM_MOV_PATH, "MouseCam_Left" +STIM_MOV_EXT)
+tmp_path = Path.joinpath(STIM_MOV_PATH, "MouseCam" +STIM_MOV_EXT)
 mov_MouseCamLeft = stim_movies.load_qdspy_movie(tmp_path)
 mov_MouseCamLeft[:,:,:,2] = 0
 

@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: eyewire2-figures (3.13.14.final.0)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -33,9 +33,8 @@ from matplotlib import colors
 import numpy as np
 
 HERE = os.getcwd()
-sys.path.append(HERE)
 sys.path.append(os.path.join(HERE, "..", "utils"))
-from light_exposure.stim_utils.stimulus import stim_movies, stim_outlines
+from stim_utils.stimulus import stim_movies, stim_outlines
 from data_io import get_data_config, REPO_ROOT
 
 # %%
@@ -50,7 +49,9 @@ STIM_MOV_PATH = DATA_2P / "stimuli-as-movies"
 CONSOL_PATH = Path(HERE) / "light_exposure" /"experiment-overview_consolidated.csv"
 
 # Create figures directory if it doesn't exist
-FIG_DIR = os.path.join(HERE, "figures")
+# (not versioned - unlike most other notebooks - since this doesn't change with
+# data_config.yaml's data version, only with the manually curated spreadsheets)
+FIG_DIR = os.path.join(HERE, "..", "figures", "light_exposure")
 os.makedirs(FIG_DIR, exist_ok=True)
 
 # %% [markdown]
@@ -229,7 +230,7 @@ if False:
     ax.set_aspect('equal')
 
     plt.tight_layout()
-    plt.savefig(os.path.join(FIG_DIR, 'stimulus_presentation_map.pdf'))
+    plt.savefig(os.path.join(FIG_DIR, 'stimulus_presentation_map.svg'))
     plt.show()
 
 # %% [markdown]
@@ -252,7 +253,7 @@ mov_Chirp = stim_movies.load_qdspy_movie(tmp_path)
 mov_Chirp[:,:,:,2] = 0
 
 # Load natural movie (MouseCam_Left) stimulus
-tmp_path = Path.joinpath(STIM_MOV_PATH, "MouseCam_Left" +STIM_MOV_EXT)
+tmp_path = Path.joinpath(STIM_MOV_PATH, "MouseCam" +STIM_MOV_EXT)
 mov_MouseCamLeft = stim_movies.load_qdspy_movie(tmp_path)
 mov_MouseCamLeft[:,:,:,2] = 0
 

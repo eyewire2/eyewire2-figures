@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: eyewire2-figures (3.13.5.final.0)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -276,7 +276,6 @@ ax.set_yticks([])
 plt.tight_layout()
 
 fig.savefig(f'{fig_dir}/bc-dendrogram.svg')
-fig.savefig(f'{fig_dir}/bc-dendrogram.png', dpi=600)
 
 # %% [markdown]
 # ## Nearest neighbors
@@ -403,7 +402,6 @@ def plot_nnd_histograms(df, celltypes,
 fig = plot_nnd_histograms(df[df.valid_celltype_final], celltypes=plot_order)
 
 fig.savefig(f'{fig_dir}/BC_NND.svg', dpi=600, bbox_inches='tight')
-fig.savefig(f'{fig_dir}/BC_NND.png', dpi=600, bbox_inches='tight')
 plt.show()
 
 # %% [markdown]
@@ -465,7 +463,6 @@ fig, axs = save_and_plot_feats(
 plt.tight_layout(h_pad=0.3)
 
 fig.savefig(f'{fig_dir}/bc-tnse-features.svg', bbox_inches='tight')
-fig.savefig(f'{fig_dir}/bc-tnse-features.png', dpi=600, bbox_inches='tight')
 
 # %% [markdown]
 # ## Morph examples
@@ -509,7 +506,6 @@ for i in range(nrows):
 
     
     fig.savefig(f'{fig_dir}/celltype_final-example_set{i}({nrows}).svg', dpi=600, bbox_inches='tight')
-    fig.savefig(f'{fig_dir}/celltype_final-example_set{i}({nrows}).png', dpi=600, bbox_inches='tight')
     
     plt.show()
 
@@ -582,7 +578,6 @@ for name, extent in {'wide': [50, 1150, 50, 1150], 'zoom': [200, 400, 600, 800],
                 ax.set_title(f"{celltype}\n(n={n_cells_label})", fontsize=7)
         
         fig.savefig(f'{fig_dir}/bc-{celltypes_to_plot}_set{i}({nrows})_{extent}.svg', dpi=600, bbox_inches='tight')
-        fig.savefig(f'{fig_dir}/bc-{celltypes_to_plot}_set{i}({nrows})_{extent}.png', dpi=600, bbox_inches='tight')
         plt.show()
 
 # %% [markdown]

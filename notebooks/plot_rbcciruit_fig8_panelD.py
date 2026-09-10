@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -282,7 +282,6 @@ sns.despine(trim = True)
 # ax.set_title(f"{cell_type} outputs", loc = 'left')
 ax.set_title(f"outputs", loc = 'left')
 fig.savefig(f'{fig_dir}/fig8_D_outputs_boxplot.svg')
-fig.savefig(f'{fig_dir}/fig8_D_outputs_boxplot.png')
 
 # %% [markdown]
 # ## panel D : inputs barplot
@@ -365,7 +364,6 @@ ax.set_xticklabels(["A17", "nNOS-1", "MF AC"])
 
 ax.set_title(f"inputs", loc = 'left')
 fig.savefig(f'{fig_dir}/fig8_D_inputs_boxplot.svg')
-fig.savefig(f'{fig_dir}/fig8_D_inputs_boxplot.png')
 
 # %%
 from watermark import watermark

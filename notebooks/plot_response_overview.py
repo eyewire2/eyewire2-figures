@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: eyewire2-figures (3.13.5.final.0)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---

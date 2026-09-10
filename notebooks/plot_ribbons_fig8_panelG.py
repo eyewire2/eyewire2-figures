@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -150,7 +150,6 @@ ax.set_xlabel('count')
 
 
 fig.savefig(f'{fig_dir}/fig8_G_density_z.svg')
-fig.savefig(f'{fig_dir}/fig8_G_density_z.png')
 
 # %%
 from watermark import watermark

@@ -191,11 +191,12 @@ df_type = add_skels(df[
     & ((df.chirp_qidx > 0.45) | (df.bar_qidx > 0.6))
     & (df["Status"] == 'Complete')
 ])
-print(f"{df_type.shape=}")
+print(f"Selected: {df_type.shape=}")
 print(df_type['Latest SegID'].values.astype(int))
 df_type = df_type[df_type.skel.notnull()]
-print(f"{df_type.shape=}")
+print(f"Selected with skeletons: {df_type.shape=}")
 
+# %%
 print(df_type[['Latest SegID', 'Latest NucID', 'Cell Type', 'chirp_qidx', 'bar_qidx']])
 
 if len(df_type) > 3:

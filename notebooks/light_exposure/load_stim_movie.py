@@ -29,7 +29,6 @@ import matplotlib.pyplot as plt
 from ipywidgets import interact, IntSlider
 
 HERE = os.getcwd()
-sys.path.append(HERE)
 sys.path.append(os.path.join(HERE, "..", "..", "utils"))
 from data_io import get_data_config, REPO_ROOT
 from stim_utils.stimulus import stim_movies
@@ -57,7 +56,7 @@ tmp_path = Path.joinpath(STIM_MOV_PATH, "Chirp" +STIM_MOV_EXT)
 mov_Chirp = stim_movies.load_qdspy_movie(tmp_path)
 mov_Chirp[:,:,:,2] = 0
 
-tmp_path = Path.joinpath(STIM_MOV_PATH, "MouseCam_Left" +STIM_MOV_EXT)
+tmp_path = Path.joinpath(STIM_MOV_PATH, "MouseCam" +STIM_MOV_EXT)
 mov_MouseCamLeft = stim_movies.load_qdspy_movie(tmp_path)
 mov_MouseCamLeft[:,:,:,2] = 0
 

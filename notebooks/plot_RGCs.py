@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: eyewire2-figures (3.13.5.final.0)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -271,7 +271,6 @@ for i in range(nrows):
             ax.set_title(f"{ct_short}\n(n={n_cells_label})", fontsize=7)
 
     fig.savefig(f'{fig_dir}/celltype_final-example_set{i}.svg', dpi=600, bbox_inches='tight')
-    fig.savefig(f'{fig_dir}/celltype_final-example_set{i}.png', dpi=600, bbox_inches='tight')
     
     plt.show()
 
@@ -369,7 +368,6 @@ for i, celltype_final in enumerate(celltypes_to_mosaic):
     cbar.outline.set_visible(True)
 
 fig.savefig(f'{fig_dir}/rgc-mosaic-{celltypes_to_mosaic}_{extent}.svg', dpi=600, bbox_inches='tight')
-fig.savefig(f'{fig_dir}/rgc-mosaic-{celltypes_to_mosaic}_{extent}.png', dpi=600, bbox_inches='tight')
 
 plt.show()
 

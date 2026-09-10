@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -555,7 +555,6 @@ fig_count = plot_boxplot(
 
 
 fig_count.savefig(f'{fig_dir}/fig8_F_counts.svg', format = 'svg')
-fig_count.savefig(f'{fig_dir}/fig8_F_counts.png', format = 'png')
 
 # %% [markdown]
 # ### mean size per BC type
@@ -570,7 +569,6 @@ fig_size = plot_boxplot(
 
 
 fig_size.savefig(f'{fig_dir}/fig8_F_size.svg', format = 'svg')
-fig_size.savefig(f'{fig_dir}/fig8_F_size.png', format = 'png')
 
 # %% [markdown]
 # ## figure S1
@@ -593,7 +591,6 @@ fig_count = plot_ridgeplot(
 
 
 fig_count.savefig(f'{fig_dir}/figS1_counts_ridge.svg', format = 'svg')
-fig_count.savefig(f'{fig_dir}/figS1_counts_ridge.png', format = 'png')
 
 # %% [markdown]
 # ### distribution of mean ribbon size per BC type
@@ -610,7 +607,6 @@ fig_size = plot_ridgeplot(
 
 
 fig_size.savefig(f'{fig_dir}/figS1_sizes_ridge.svg', format = 'svg')
-fig_size.savefig(f'{fig_dir}/figS1_sizes_ridge.png', format = 'png')
 
 # %% [markdown]
 # # statistical testing
@@ -663,9 +659,6 @@ fig_stats_size = make_figure(results_size_alternative,  "Cell size",  "panels/Fi
 
 fig_stats_count.savefig(f"{fig_dir}/figS2_stats_IPL_count.svg")
 fig_stats_size.savefig(f"{fig_dir}/figS2_stats_size.svg")
-
-fig_stats_count.savefig(f"{fig_dir}/figS2_stats_IPL_count.png")
-fig_stats_size.savefig(f"{fig_dir}/figS2_stats_size.png")
 
 # %%
 from watermark import watermark

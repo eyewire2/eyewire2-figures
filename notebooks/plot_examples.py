@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.5
 #   kernelspec:
-#     display_name: eyewire2-figures (3.13.5.final.0)
+#     display_name: eyewire2-figures
 #     language: python
 #     name: python3
 # ---
@@ -95,8 +95,7 @@ for i, (celltype, skel_file) in enumerate(skel_files.items()):
     ax.set(xlabel=None, ylabel=None, xticks=[], yticks=[])
 
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, 'examples.pdf'), transparent=True)
-plt.savefig(os.path.join(fig_dir, 'examples.png'), dpi=600, transparent=True)
+plt.savefig(os.path.join(fig_dir, 'examples.svg'), transparent=True)
 plt.show()
 
 # %%
