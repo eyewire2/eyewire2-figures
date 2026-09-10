@@ -11,8 +11,8 @@ _config = get_data_config()
 DATA_2P = _config["data_2p_dir"]
 DATA_SS = _config["spreadsheet_dir"]
 
-MAIN_ALL_CELLS_SHEET = 'Eyewire II Proofread Cells Main List - All Cells 2026-08-06.csv'
-MAP_SHEET = "Eyewire II Proofread Cells Main List - EM-2p-mapping 2026-08-06.csv"
+MAIN_ALL_CELLS_SHEET = _config["file_prefix_main_cells_sheet"] + _config["version_main_cells_sheet"] + ".csv"
+MAP_SHEET = _config["file_prefix_map_sheet"] + _config["version_main_cells_sheet"] + ".csv"
 
 
 def load_parquet_df(filepath):

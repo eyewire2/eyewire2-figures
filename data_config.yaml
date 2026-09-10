@@ -5,12 +5,17 @@ image_root: "../../huggingface/eyewire2-data/images"
 data_2p_dir: "../../huggingface/eyewire2-data/data-2p"
 spreadsheet_dir: "../../huggingface/eyewire2-data/spreadsheets"
 track_proofreading_dir: "../../huggingface/eyewire2-data/track_proofreading/track_proofreading/changelogs_csv"
-version: "2026-08-11-18h"
+
+version: "2026-09-08-11h"
 file_prefix: "df_all_neurons_"
 
-version_ribbons: "2026-07-22-11h"
+version_ribbons: "2026-08-11-11h"
 file_prefix_rb: "df_ribbons_"
 
 version_rb: "2026-05-28-11h"
 file_prefix_rbc_celltypes: "fig8_df_rbc_celltype_"
 file_prefix_rbc_synapses: "fig8_df_rbc_synapse_"
+
+version_main_cells_sheet: "2026-08-11"
+file_prefix_main_cells_sheet: "Eyewire II Proofread Cells Main List - All Cells - "
+file_prefix_map_sheet: "Eyewire II Proofread Cells Main List - EM-2p-mapping - "

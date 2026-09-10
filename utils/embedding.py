@@ -36,7 +36,7 @@ def plot_feats(
             break
         ax = axs[i]
         x_feat = all_feats[:, i]
-        q5_q95 = (-2, +2) if clip else np.percentile(x_feat, q=[5, 95])
+        q5_q95 = (-2, +2) if clip else np.nanpercentile(x_feat, q=[5, 95])
         scatter = ax.scatter(*all_emb[plot_order, :].T, s=s, lw=0, c=x_feat[plot_order],
                              vmin=q5_q95[0], vmax=q5_q95[1], cmap=cmap, rasterized=True)
         ax.set_aspect('equal')
