@@ -17,8 +17,8 @@
 
 # %%
 # %%time
-# # %load_ext autoreload
-# # %autoreload 2
+%load_ext autoreload
+%autoreload 2
 
 # %%
 # %%time
@@ -40,7 +40,7 @@ import data_io
 # %%time
 import colors
 from embedding import plot_embedding, save_and_plot_feats
-from mosaics import polygon_centroid, plot_multiple_mosaics
+from mosaics import plot_multiple_mosaics
 from dendrogram import ClusterDendrogram
 from plot_cells import plot_cell_morphologies
 
@@ -493,7 +493,7 @@ for i in range(nrows):
         size=20, fig=fig, axs=axs,
         color_list=[label2color[ct] for ct in rows['celltype_final'].values],
         show_on_tsne=False,
-        zlim=(-30, +60),
+        zlim=(-30, +33),
     )
 
     fig.tight_layout(w_pad=0, h_pad=-0.5)

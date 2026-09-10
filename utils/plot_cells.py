@@ -1,21 +1,20 @@
-from typing import Optional, Sequence
+from typing import Optional
 
+import dataclasses
 import os
 import numpy as np
 import pandas as pd
 
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
-from matplotlib.collections import LineCollection, PolyCollection
+from matplotlib.collections import LineCollection
 from matplotlib.figure import Figure
 from matplotlib.patches import Circle
 
 import seaborn as sns
-from scipy.stats import binned_statistic_2d
 
 import skeliner as sk
-from skeliner.plot.vis2d import _resolve_swc_palette_from_skel_cmap, _project, _as_cmap, _radii_to_sizes, \
-    _soma_ellipse2d, _trapezoid_3d
+from skeliner.plot.vis2d import _project
 
 import colors
 
@@ -28,104 +27,102 @@ _PLANE_AXES = {
     "zy": (2, 1),
 }
 
-_PLANE_NORMAL = {
-    "xy": np.array([0, 0, 1.0]),
-    "yx": np.array([0, 0, 1.0]),
-    "xz": np.array([0, 1.0, 0]),
-    "zx": np.array([0, 1.0, 0]),
-    "yz": np.array([1.0, 0, 0]),
-    "zy": np.array([1.0, 0, 0]),
-}
+
+def _radii_to_sizes(rr: np.ndarray, ax: Axes) -> tuple[np.ndarray, float]:
+    """
+    Convert radii (data units) -> scatter sizes (points**2) so that the same
+    physical radius is rendered identically in every subplot.
+
+    matplotlib's scatter ``s`` is the squared *diameter* in points for the
+    default circular marker (the unit-diameter marker path is scaled by
+    ``sqrt(s)``), not the marker's area -- so ``s`` must be ``diameter_pt**2``,
+    not ``pi * r_pt**2`` (the latter under-sizes markers by a factor of
+    ``sqrt(pi)/2`` in radius, i.e. ``pi/4`` in area).
+    """
+    fig = ax.figure
+    dpi = fig.dpi
+
+    x0, x1 = ax.get_xlim()
+    y0, y1 = ax.get_ylim()
+    bbox = ax.get_window_extent()
+
+    ppd_x = bbox.width / abs(x1 - x0)
+    ppd_y = bbox.height / abs(y1 - y0)
+    ppd = min(ppd_x, ppd_y)
+
+    r_px = rr * ppd
+    r_pt = r_px * 72.0 / dpi
+    return (2 * r_pt) ** 2, ppd
 
 
 def skeliner_projection(
     skel: sk.Skeleton,
-    mesh = None,
     *,
     plane: str = "xy",
     radius_metric: str | None = None,
-    bins: int | tuple[int, int] = 800,
     scale: float = 1.0,
     xlim: tuple[float, float] | None = None,
     ylim: tuple[float, float] | None = None,
-    draw_skel: bool = True,
-    draw_mesh: bool = True,
-    draw_edges: bool = True,
-    draw_cylinders: bool = False,
     rasterized: bool = True,
     ax: Axes | None = None,
-    mesh_cmap = "Blues",  # mesh color map
-    skel_cmap = "Pastel2",  # skeleton color map
-    vmax_fraction: float = 0.10,
-    edge_lw: float = 0.5,
-    circle_alpha: float = 0.25,
-    cylinder_alpha: float = 0.5,
-    highlight_nodes: int | Sequence[int] | None = None,
-    highlight_face_alpha: float = 0.5,
+    edge_lw: float = 0.2,
+    circle_alpha: float = 1.0,
     unit: str | None = None,
-    # soma --------------------------------------------------------------- #
-    draw_soma_mask: bool = True,
+    node_color: str | tuple = "red",
+    soma_color: str | tuple = "black",
+    node_lw: float = 0.5,
     soma_style: str = "dashed",  # "dashed" | "filled"
-    # colors
-    color_by: str = "fixed",  # "ntype" or "fixed"
+    soma_marker_size: float = 15,
+    soma_linewidth: float = 0.8,
+    show_soma: bool = True,
 ) -> tuple[Figure, Axes]:
-    """Orthographic 2‑D overview of a skeleton with an **optional** mesh‑density
-    background.
+    """Orthographic 2-D projection of a skeleton (node circles, edges, soma marker).
 
     Parameters
     ----------
     skel : skeliner.Skeleton
-        The centre‑line skeleton to visualise.
-    mesh : trimesh.Trimesh | None, default *None*
-        Surface mesh used to draw a vertex‑density heat‑map and (optionally) the
-        soma surface.  Pass *None* to **omit** the background histogram and any
-        mesh‑based overlays.
+        The centre-line skeleton to visualise.
     plane : {"xy", "xz", "yz", "yx", "zx", "zy"}
         Projection plane.
-    bins : int | (int,int), default *800*
-        Resolution of the background histogram.  Ignored when *mesh* is *None*.
-    scale : float | (float, float), default *1*
-        Multiplicative scale(s).  Either a scalar applied to both skeleton and
-        mesh or a pair ``(s_skel, s_mesh)``.
-    xlim, ylim : (min, max) or *None*
-        Spatial extent **before** plotting.  If not given, limits are inferred
-        from the histogram (when *mesh* is available) or the skeleton.
-    draw_skel, draw_mesh, draw_edges, draw_cylinders: bool
-        Toggles for skeleton glyphs.
+    scale : float, default 1
+        Multiplicative scale applied to node coordinates and radii.
+    xlim, ylim : (min, max) or None
+        Spatial extent to crop to and set as axis limits.
+    rasterized : bool
+        Rasterize skeleton glyphs.
+    ax : matplotlib.axes.Axes | None
+        Existing Axes to draw into. When None, a new figure is created.
+    edge_lw : float
+        Line width of skeleton edges.
+    node_lw : float
+        Line width of skeleton node circles.
+    circle_alpha : float
+        Transparency of skeleton node circles.
+    unit : str | None
+        Axis-label unit.
+    node_color, soma_color : str or tuple
+        Color of the skeleton node circles and of the soma marker, respectively.
     soma_style : str
         How to plot the soma, currently supported styles are:
-        - "dashed" : dashed ellipse outline (default)
+        - "dashed" : dashed circle outline (default)
         - "filled" : filled circle with soma colour
-    rasterized : bool | int
-        Rasterize skeleton. If int and > 1, not only skeleton will be rasterized.
-    ax : matplotlib.axes.Axes | None
-        Existing *Axes* to draw into.  When *None*, a new figure is created.
-    mesh_cmap, vmax_fraction : appearance of the histogram – see original docs.
-    circle_alpha, cylinder_alpha : transparencies of skeleton glyphs.
-    highlight_nodes : node IDs to highlight.
-    unit : str | None
-        Axis‑label unit.
-    draw_soma_mask : bool, default *True*
-        Draw the soma shell when both *mesh* **and** soma vertices are
-        available.
+    soma_marker_size : float
+        Size (``s``) of the small centre-dot marker drawn for ``soma_style="dashed"``.
+    soma_linewidth : float
+        Line width of the soma circle outline.
+    show_soma : bool
+        Whether to draw the soma marker/circle at all. Set to False when the
+        soma centre falls outside the plotted window.
 
     Returns
     -------
     fig, ax : matplotlib Figure and Axes
     """
 
-    # ───────────────────────────────── validation & setup ──────────────────
     if plane not in _PLANE_AXES:
         raise ValueError(f"plane must be one of {tuple(_PLANE_AXES)}")
 
     ix, iy = _PLANE_AXES[plane]
-
-    # normalise *scale* → [skel_scale, mesh_scale]
-    if not isinstance(scale, Sequence):
-        scale = [scale, scale]
-    if len(scale) != 2:
-        raise ValueError("scale must be a scalar or a pair of two scalars")
-    scl_skel, scl_mesh = map(float, scale)
 
     if radius_metric is None:
         radius_metric = skel.recommend_radius()[0]
@@ -133,25 +130,9 @@ def skeliner_projection(
     if unit is None:  # try to grab from metadata
         unit = skel.meta.get("unit", None)
 
-    highlight_set = (
-        set(map(int, np.atleast_1d(highlight_nodes)))
-        if highlight_nodes is not None
-        else set()
-    )
+    xy_skel = _project(skel.nodes, ix, iy) * scale
+    rr = skel.radii[radius_metric] * scale
 
-    # ─────────────────────────────colormap ─────────────
-    swc_colors = _resolve_swc_palette_from_skel_cmap(skel_cmap)
-
-    # ───────────────────────────── project (and optionally crop) ───────────
-    xy_skel = _project(skel.nodes, ix, iy) * scl_skel
-    rr = skel.radii[radius_metric] * scl_skel
-
-    if mesh is not None and draw_mesh:
-        xy_mesh = _project(mesh.vertices, ix, iy) * scl_mesh
-    else:  # empty placeholder for unified code‑path
-        xy_mesh = np.empty((0, 2), dtype=float)
-
-    # helper – applies *xlim/ylim* cropping on a 2‑column array
     def _crop_window(xy: np.ndarray) -> np.ndarray:
         keep = np.ones(len(xy), dtype=bool)
         if xlim is not None:
@@ -160,73 +141,21 @@ def skeliner_projection(
             keep &= (xy[:, 1] >= ylim[0]) & (xy[:, 1] <= ylim[1])
         return keep
 
-    # crop *before* heavy lifting
     keep_skel = _crop_window(xy_skel)
-    keep_mask = keep_skel  # ← keep the original name for edges
-    idx_keep = np.flatnonzero(keep_mask)  # 1-D array of kept node IDs
-    xy_skel = xy_skel[keep_mask]  # already done
-    rr = rr[keep_mask]  # already done
+    xy_skel = xy_skel[keep_skel]
+    rr = rr[keep_skel]
 
-    # colour array for the *kept* nodes
-    if color_by == "ntype" and skel.ntype is not None:
-        col_nodes = swc_colors[skel.ntype[idx_keep]]
-    else:
-        col_nodes = "red"
-
-    if mesh is not None and xy_mesh.size and draw_mesh:
-        keep_mesh = _crop_window(xy_mesh)
-        xy_mesh = xy_mesh[keep_mesh]
-
-    # ─────────────────────────────── histogram (mesh may be None) ──────────
-    if mesh is not None and xy_mesh.size and draw_mesh:
-        # ensure bins argument correct
-        if isinstance(bins, int):
-            bins_arg: int | tuple[int, int] = bins
-        elif (
-                isinstance(bins, tuple)
-                and len(bins) == 2
-                and all(isinstance(b, int) for b in bins)
-        ):
-            bins_arg = (int(bins[0]), int(bins[1]))
-        else:
-            raise ValueError("bins must be an int or a tuple of two ints")
-
-        hist, xedges, yedges, _ = binned_statistic_2d(
-            xy_mesh[:, 0],
-            xy_mesh[:, 1],
-            None,
-            statistic="count",
-            bins=bins_arg,
-        )
-        hist = hist.T  # imshow expects (rows = y)
-    else:
-        hist = None
-
-    # ───────────────────────────── figure / axes boilerplate ───────────────
     if ax is None:
         fig, ax = plt.subplots(figsize=(6, 6))
     else:
         fig = ax.figure
 
-    # background image – only when we do have a histogram
-    if hist is not None and draw_mesh:
-        ax.imshow(
-            hist,
-            extent=(xedges[0], xedges[-1], yedges[0], yedges[-1]),
-            origin="lower",
-            cmap=_as_cmap(mesh_cmap),
-            vmax=hist.max() * vmax_fraction,
-            alpha=1.0,
-            rasterized=rasterized > 1,
-        )
-
-    # ──────────────────────── draw skeleton circles (always) ───────────────
-    if draw_skel and xy_skel.size:
-        # limits need to be defined before converting radii → scatter sizes
+    # skeleton node circles
+    if xy_skel.size:
+        # limits need to be defined before converting radii -> scatter sizes
         if xlim is not None and ylim is not None:
             ax.set_xlim(xlim)
             ax.set_ylim(ylim)
-        # elif hist is None:  # fallback to skeleton extents
         else:
             ax.set_xlim((xy_skel[:, 0].min(), xy_skel[:, 0].max()))
             ax.set_ylim((xy_skel[:, 1].min(), xy_skel[:, 1].max()))
@@ -234,163 +163,74 @@ def skeliner_projection(
         ax.set_aspect(1)
         sizes, _ppd = _radii_to_sizes(rr, ax)
 
+        # node 0 is the soma centre, drawn separately below
         ax.scatter(
-            xy_skel[:, 0][1:],
-            xy_skel[:, 1][1:],
+            xy_skel[1:, 0],
+            xy_skel[1:, 1],
             s=sizes[1:],
-            facecolors="none",
-            edgecolors=col_nodes[1:]
-            if isinstance(col_nodes, np.ndarray)
-            else col_nodes,
-            linewidths=1.0,
+            facecolors=node_color,
+            edgecolors=node_color,
+            linewidths=node_lw,
             alpha=circle_alpha,
-            zorder=2,
-            rasterized=rasterized > 0,
+            zorder=1,
+            rasterized=rasterized,
         )
 
-        # highlighted nodes – filled circles
-        if highlight_set:
-            orig_ids = np.flatnonzero(keep_skel)
-            hilite_mask = np.isin(orig_ids, list(highlight_set))
-            if hilite_mask.any():
-                ax.scatter(
-                    xy_skel[hilite_mask, 0],
-                    xy_skel[hilite_mask, 1],
-                    s=sizes[hilite_mask],
-                    facecolors="green",
-                    edgecolors="green",
-                    linewidths=0.9,
-                    alpha=highlight_face_alpha,
-                    zorder=3.5,
-                    rasterized=rasterized > 1,
-                )
+    # soma marker
+    if show_soma:
+        c_xy = _project(skel.nodes[[0]] * scale, ix, iy).ravel()
 
-    # ───────────────────────── soma shell & center (if possible) ───────────
-    c_xy = _project(skel.nodes[[0]] * scl_skel, ix, iy).ravel()
-    col_soma = swc_colors[1] if color_by == "ntype" else "pink"
+        if soma_style == 'filled':
+            soma_fc = soma_color
+            soma_ec = 'k'
+            soma_ls = '-'
+        else:
+            ax.scatter(*c_xy, color="black", s=soma_marker_size, zorder=3)
+            soma_fc = 'none'
+            soma_ec = 'k'
+            soma_ls = '--'
 
-    if soma_style == 'filled':
-        soma_fc = col_soma
-        soma_ec = 'k'
-        soma_ls = '-'
-        soma_mc = 'none'
-    else:
-        ax.scatter(*c_xy, color="black", s=15, zorder=3)
-        soma_fc = 'none'
-        soma_ec = 'k'
-        soma_ls = '--'
-        soma_mc = col_soma
-
-    if (
-            mesh is not None
-            and skel.soma is not None
-            and skel.soma.verts is not None
-    ):
-        if draw_soma_mask:
-            xy_soma = _project(mesh.vertices[np.asarray(skel.soma.verts, int)], ix, iy)
-            xy_soma = xy_soma * scl_mesh
-            xy_soma = xy_soma[_crop_window(xy_soma)]  # respect crop
-
-            ax.scatter(
-                xy_soma[:, 0],
-                xy_soma[:, 1],
-                s=1,
-                c=[soma_mc],
-                alpha=0.5,
-                linewidths=0,
-                label="soma surface",
-                rasterized=rasterized > 0,
-            )
-        # dashed ellipse outline
-        ell = _soma_ellipse2d(skel.soma, plane, scale=scl_skel)
-        ell.set_edgecolor(soma_ec)
-        ell.set_facecolor(soma_fc)
-        ell.set_linestyle(soma_ls)
-        ell.set_linewidth(0.8)
-        ell.set_alpha(0.9)
-        ax.add_patch(ell)
-    else:
         soma_circle = Circle(
             c_xy,
-            skel.soma.equiv_radius * scl_skel,
+            skel.soma.equiv_radius * scale,
             facecolor=soma_fc,
             edgecolor=soma_ec,
-            linewidth=0.8,
+            linewidth=soma_linewidth,
             linestyle=soma_ls,
             alpha=0.9,
+            zorder=3,
         )
         ax.add_patch(soma_circle)
 
-    # ─────────────────────── draw edges & cylinders (unchanged) ────────────
-    if draw_skel and skel.edges.size:
-        keep = keep_skel  # alias
-        if draw_edges:
-            ekeep = keep[skel.edges[:, 0]] & keep[skel.edges[:, 1]]
-            edges_kept = skel.edges[ekeep]
-            if edges_kept.size:
-                # original → compressed index map
-                idx_map = -np.ones(len(keep), int)
-                idx_map[np.flatnonzero(keep)] = np.arange(keep.sum())
+    # skeleton edges
+    if skel.edges.size:
+        ekeep = keep_skel[skel.edges[:, 0]] & keep_skel[skel.edges[:, 1]]
+        edges_kept = skel.edges[ekeep]
+        if edges_kept.size:
+            # original -> compressed index map
+            idx_map = -np.ones(len(keep_skel), int)
+            idx_map[np.flatnonzero(keep_skel)] = np.arange(keep_skel.sum())
 
-                seg_start = xy_skel[idx_map[edges_kept[:, 0]]]
-                seg_end = xy_skel[idx_map[edges_kept[:, 1]]]
-                segments = np.stack((seg_start, seg_end), axis=1)
+            seg_start = xy_skel[idx_map[edges_kept[:, 0]]]
+            seg_end = xy_skel[idx_map[edges_kept[:, 1]]]
+            segments = np.stack((seg_start, seg_end), axis=1)
 
-                lc = LineCollection(
-                    segments.tolist(),
-                    colors="black",
-                    linewidths=edge_lw,
-                    alpha=cylinder_alpha,
-                    rasterized=rasterized > 0,
-                )
-                ax.add_collection(lc)
+            lc = LineCollection(
+                segments.tolist(),
+                colors="black",
+                linewidths=edge_lw,
+                alpha=1.0,
+                zorder=2,
+                rasterized=rasterized,
+                capstyle='round',
+                joinstyle='round',
+            )
+            ax.add_collection(lc)
 
-        if draw_cylinders:
-            ekeep = keep_skel[skel.edges[:, 0]] & keep_skel[skel.edges[:, 1]]
-            edges_kept = skel.edges[ekeep]
-            if edges_kept.size:
-                idx_map = -np.ones(len(keep_skel), int)
-                idx_map[np.flatnonzero(keep_skel)] = np.arange(keep_skel.sum())
-
-                quads = []
-                for n0, n1 in edges_kept:
-                    i0, i1 = idx_map[[n0, n1]]
-                    quad = _trapezoid_3d(
-                        skel.nodes[n0] * scl_skel,
-                        skel.nodes[n1] * scl_skel,
-                        rr[i0],
-                        rr[i1],
-                        plane,
-                    )
-                    if quad is not None:
-                        quads.append(quad)
-
-                if quads:
-                    # make sure axes limits are already set before adding
-                    if xlim is not None:
-                        ax.set_xlim(xlim)
-                    if ylim is not None:
-                        ax.set_ylim(ylim)
-
-                    pc = PolyCollection(
-                        quads,
-                        facecolors="red",
-                        edgecolors="red",
-                        alpha=cylinder_alpha,
-                        zorder=10,
-                        rasterized=rasterized > 0,
-                    )
-                    ax.add_collection(pc)
-
-    # ────────────────────────────── final cosmetics ────────────────────────
     if plane in ['xy', 'yx']:
         ax.set_aspect('equal', adjustable='box')
 
-    if unit is None:
-        unit_str = "" if scl_skel == 1.0 else f"(×{scl_skel:g})"
-    else:
-        unit_str = f"({unit})"
-
+    unit_str = "" if unit is None else f"({unit})"
     ax.set_xlabel(f"{plane[0]} {unit_str}")
     ax.set_ylabel(f"{plane[1]} {unit_str}")
 
@@ -401,6 +241,42 @@ def skeliner_projection(
         ax.set_ylim(ylim)
 
     return fig, ax
+
+
+def _prune_to_window(
+        skel: sk.Skeleton,
+        rad: float,
+        zlim: tuple[float, float],
+) -> sk.Skeleton:
+    """Drop nodes whose (x, y, z) falls outside the plotted x/y/z window.
+
+    ``skeliner_projection`` only crops nodes on the two axes of the plane
+    being drawn, so e.g. a neurite cropped out of the xy view (a long RGC
+    axon leaving the window in y) would still show up in the xz view, and
+    one cropped out of the xz view in z would still show up in the xy view.
+    Pruning on x/y/z up front keeps both views restricted to the same set
+    of nodes.
+    """
+    keep = (
+        (skel.nodes[:, 0] >= -rad) & (skel.nodes[:, 0] <= rad) &
+        (skel.nodes[:, 1] >= -rad) & (skel.nodes[:, 1] <= rad) &
+        (skel.nodes[:, 2] >= zlim[0]) & (skel.nodes[:, 2] <= zlim[1])
+    )
+    keep[0] = True  # soma node
+
+    idx_map = -np.ones(len(keep), dtype=int)
+    idx_map[np.flatnonzero(keep)] = np.arange(keep.sum())
+
+    ekeep = keep[skel.edges[:, 0]] & keep[skel.edges[:, 1]]
+    edges = idx_map[skel.edges[ekeep]]
+
+    return dataclasses.replace(
+        skel,
+        nodes=skel.nodes[keep],
+        radii={k: v[keep] for k, v in skel.radii.items()},
+        edges=edges,
+        ntype=skel.ntype[keep] if skel.ntype is not None else None,
+    )
 
 
 def get_skel_center(
@@ -449,6 +325,10 @@ def plot_cell_morphologies(
         axs: Optional[np.ndarray] = None,
         sb_fontsize: float = 10,
         zlim: tuple[float, float] = (-30, +50),
+        edge_lw: float = 0.2,
+        node_lw: float = 0.5,
+        soma_marker_size: float = 15,
+        soma_linewidth: float = 0.8,
         # --- tSNE plot parameters (only used if show_on_tsne=True) ---
         df: Optional[pd.DataFrame] = None,
         is_labelled: Optional[np.ndarray] = None,
@@ -496,6 +376,14 @@ def plot_cell_morphologies(
     zlim : tuple of (float, float), optional
         Y-axis limits for the xz projection plane, in µm. Default is
         ``(-30, +50)``.
+    edge_lw : float, optional
+        Line width of skeleton edges, passed to ``skeliner_projection``.
+    node_lw : float, optional
+        Line width of skeleton node circles, passed to ``skeliner_projection``.
+    soma_marker_size : float, optional
+        Size of the soma centre-dot marker, passed to ``skeliner_projection``.
+    soma_linewidth : float, optional
+        Line width of the soma circle outline, passed to ``skeliner_projection``.
     df : pd.DataFrame, optional
         Full embedding DataFrame containing ``tsne_d0``, ``tsne_d1`` columns
         for background scatter. Required when ``show_on_tsne=True``.
@@ -572,7 +460,7 @@ def plot_cell_morphologies(
         assert fig is not None
 
     sns.despine(top=True, bottom=True, left=True, right=True)
-        
+
     skels = [sk.io.load_swc(os.path.join(skel_dir, f"{cell}.swc"))
              for cell in rows.index]
 
@@ -580,6 +468,12 @@ def plot_cell_morphologies(
         center = get_skel_center('tree', skel)
         skel.nodes[:, 0] -= center[0]
         skel.nodes[:, 1] -= center[1]
+        soma_in_bounds = (
+            -rad <= skel.nodes[0, 0] <= rad and
+            -rad <= skel.nodes[0, 1] <= rad and
+            zlim[0] <= skel.nodes[0, 2] <= zlim[1]
+        )
+        skel = _prune_to_window(skel, rad, zlim)
 
         for j, plane in enumerate(['xz', 'xy']):
             ax = axs[j, i]
@@ -588,11 +482,15 @@ def plot_cell_morphologies(
             skeliner_projection(
                 skel, ax=ax, plane=plane,
                 circle_alpha=1,
-                skel_cmap=[current_color, (0, 0, 0, 0)],
-                color_by='ntype',
-                draw_soma_mask=False,
+                node_color=current_color,
+                soma_color=current_color,
                 xlim=(-rad, +rad),
                 ylim=(-rad, +rad) if plane == 'xy' else zlim,
+                edge_lw=edge_lw,
+                node_lw=node_lw,
+                soma_marker_size=soma_marker_size,
+                soma_linewidth=soma_linewidth,
+                show_soma=soma_in_bounds,
             )
             ax.set_xlim(-rad, +rad)
 

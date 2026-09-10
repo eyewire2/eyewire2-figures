@@ -26,6 +26,7 @@ import os
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from scipy.optimize import brentq
 import seaborn as sns
 
 # %%
@@ -274,6 +275,35 @@ fig.savefig(f'{fig_dir}/class-tnse-features.svg', bbox_inches='tight')
 # ## Examples
 
 # %%
+def estimate_ellipse_semi_major(hull_diameter, hull_perimeter):
+    """Estimate the semi-major axis (largest distance from centroid to the
+    boundary) of an ellipse with the given area and perimeter.
+
+    `hull_diameter` is the equivalent diameter of a circle with the same
+    area as the convex hull (see `compute_convex_hull_features`), so
+    `hull_diameter / 2` alone underestimates the true extent of elongated
+    (non-round) cells. Combining it with `hull_perimeter` lets us fit an
+    ellipse of the same area and perimeter and recover its semi-major axis
+    instead, via Ramanujan's ellipse-perimeter approximation.
+    """
+    area = np.pi / 4 * hull_diameter ** 2
+    a_min = np.sqrt(area / np.pi)  # circle: semi-major == semi-minor
+
+    def ramanujan_perimeter(a):
+        b = area / (np.pi * a)
+        h = ((a - b) / (a + b)) ** 2
+        return np.pi * (a + b) * (1 + 3 * h / (10 + np.sqrt(4 - 3 * h)))
+
+    if hull_perimeter <= ramanujan_perimeter(a_min):
+        return a_min
+
+    a_hi = a_min
+    while ramanujan_perimeter(a_hi) < hull_perimeter:
+        a_hi *= 2
+
+    return brentq(lambda a: ramanujan_perimeter(a) - hull_perimeter, a_min, a_hi)
+
+
 def plot_examples(name, rows, color, df, ):
     try:
         sys.path.append("../dev")
@@ -282,9 +312,13 @@ def plot_examples(name, rows, color, df, ):
     except ImportError:
         pass  # dev-only helper, not present outside this machine; swc-examples.zip should already cover this
 
-    rad = np.maximum(20, (rows.hull_diameter.max() / 2) * 1.3)
+    semi_major = np.array([
+        estimate_ellipse_semi_major(d, p)
+        for d, p in zip(rows.hull_diameter, rows.hull_perimeter)
+    ])
+    rad = np.maximum(20, semi_major.max() * 1.1)
 
-    size = 1.8 * rad
+    size = 2.0 * rad
 
     if size >= 1000:
         size = int(size // 1000) * 1000
@@ -320,6 +354,10 @@ def plot_examples(name, rows, color, df, ):
         sb_fontsize=8,
         show_on_tsne=True,
         df=df,
+        edge_lw=0.2,
+        node_lw=0.5,
+        soma_marker_size=2,
+        soma_linewidth=0.2,
         is_labelled=df['include_in_embedding'].values,
         labels=df['cellkind'].values,
         label_order=cellkinds,
@@ -340,16 +378,53 @@ def plot_examples(name, rows, color, df, ):
 # %%time
 prefer_label = df['include_in_embedding'] & df['valid_celltype_final'] & (df.celltype_final_decision == 'both_strong')
 
+
+# %%
+# %%time
+def pick_top_cells(rows, n=3, center_box=(400, 800, 400, 800), fallback_box=(300, 900, 300, 900)):
+    """Pick up to n example cells, preferring well-proofread cells near the center of the volume."""
+    if sum(rows.n_cant_fix == 0) > 0:
+        rows = rows[rows.n_cant_fix == 0]
+
+    if sum(rows.status == 'Complete') > 0:
+        rows = rows[rows.status == 'Complete']
+
+    for i in range(5):
+        if sum(rows.n_hits_edge <= i) > 0:
+            rows = rows[rows.n_hits_edge <= i]
+
+    cx0, cx1, cy0, cy1 = center_box
+    fx0, fx1, fy0, fy1 = fallback_box
+
+    in_center = rows[rows.hull_center_x.between(cx0, cx1) & rows.hull_center_y.between(cy0, cy1)]
+    in_fallback = rows[rows.hull_center_x.between(fx0, fx1) & rows.hull_center_y.between(fy0, fy1)]
+
+    if len(in_center) >= n:
+        candidates = in_center
+    elif len(in_fallback) >= n:
+        candidates = in_fallback
+    else:
+        candidates = rows
+
+    if len(candidates) <= n:
+        print(f"Only {len(candidates)} candidates found for {rows.celltype_final.iloc[0]}")
+
+    center_x, center_y = (cx0 + cx1) / 2, (cy0 + cy1) / 2
+    dists = np.hypot(candidates.hull_center_x - center_x, candidates.hull_center_y - center_y)
+    order = np.argsort(dists.values)
+    return candidates.iloc[order[:n]]
+
+
 # %%
 # %%time
 celltype = 'ON SAC'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 8]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color[celltype], df=df)
 
 # %%
 # %%time
 celltype = 'OFF SAC'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[5, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color[celltype], df=df)
 
 # %%
@@ -359,73 +434,73 @@ prefer_bcs = (df['status_alt'] == 'ok')
 # %%
 # %%time
 celltype = 'XBC'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label & prefer_bcs].iloc[[0, 1, 4]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label & prefer_bcs])
 plot_examples(celltype, rows, color=colors.cellclass2color['BC'], df=df)
 
 # %%
 # %%time
 celltype = 't7'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label & prefer_bcs].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label & prefer_bcs])
 plot_examples(celltype, rows, color=colors.cellclass2color['BC'], df=df)
 
 # %%
 # %%time
 celltype = 'RBC'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label & prefer_bcs].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label & prefer_bcs])
 plot_examples(celltype, rows, color=colors.cellclass2color['BC'], df=df)
 
 # %%
 # %%time
 celltype = 't2'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label & prefer_bcs].iloc[[0, 4, 3]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label & prefer_bcs])
 plot_examples(celltype, rows, color=colors.cellclass2color['BC'], df=df)
 
 # %%
 # %%time
 celltype = 'A2'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 3, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color['AC'], df=df)
 
 # %%
 # %%time
 celltype = 'H22'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color['AC'], df=df)
 
 # %%
 # %%time
 celltype = 'H23'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color['AC'], df=df)
 
 # %%
 # %%time
 celltype = 'A17 large'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color['AC'], df=df)
 
 # %%
 # %%time
 celltype = 'A17 small'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color['AC'], df=df)
 
 # %%
 # %%time
 celltype = 'F-mini-ON'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color['RGC'], df=df)
 
 # %%
 # %%time
 celltype = 'F-mini-OFF'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color['RGC'], df=df)
 
 # %%
 # %%time
 celltype = 'OFF transient alpha'
-rows = df.loc[(df.celltype_final == celltype) & prefer_label].iloc[[0, 1, 2]]
+rows = pick_top_cells(df.loc[(df.celltype_final == celltype) & prefer_label])
 plot_examples(celltype, rows, color=colors.cellclass2color['RGC'], df=df)
 
 # %% [markdown]
@@ -597,3 +672,5 @@ df_website_mosaic.to_csv(os.path.join(website_dir, f"AC_website_mosaic_examples.
 # %%
 from watermark import watermark
 print(watermark())
+
+# %%

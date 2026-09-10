@@ -17,8 +17,8 @@
 
 # %%
 # %%time
-# # %load_ext autoreload
-# # %autoreload 2
+%load_ext autoreload
+%autoreload 2
 
 # %%
 # %%time
@@ -39,10 +39,7 @@ import data_io
 # %%
 # %%time
 import colors
-from embedding import plot_embedding, save_and_plot_feats
-from mosaics import polygon_centroid, plot_multiple_mosaics
-from dendrogram import ClusterDendrogram
-
+from mosaics import plot_multiple_mosaics
 from plot_cells import plot_cell_morphologies
 
 # %% [markdown]
@@ -83,8 +80,8 @@ df_subset = pd.read_csv('RGC types for Figure.csv')
 
 # %%
 # %%time
-celltype2short = {row['celltype']: (row['Show'] if not pd.isna(row['Show']) else row["Don't show"]) for i, row in df_subset.iterrows()}
-celltype2show = {row['celltype']: not pd.isna(row['Show']) for i, row in df_subset.iterrows()}
+celltype2short = {row['Cell Type']: row['Cell Type Short'] for i, row in df_subset.iterrows()}
+celltype2show = {row['Cell Type']: str(row['Show']) == "1" for i, row in df_subset.iterrows()}
 
 for k, v in celltype2short.items():
     print(f"show={celltype2show[k]}: {k} ({v})")
@@ -139,8 +136,19 @@ for celltype_final_short in size_order:
     rows = df[(df.celltype_final_short == celltype_final_short)
         & df.valid_celltype_final_short]
 
+    # Get the best cell possible for each type, using the following criteria in order of priority:
     if sum(rows.celltype_final_decision == 'both_strong') > 0:
         rows = rows[rows.celltype_final_decision == 'both_strong']
+
+    if sum(rows.n_cant_fix == 0) > 0:
+        rows = rows[rows.n_cant_fix == 0]
+
+    if sum(rows.status == 'Complete') > 0:
+        rows = rows[rows.status == 'Complete']
+
+    for i in range(5):
+        if sum(rows.n_hits_edge <= i) > 0:
+            rows = rows[rows.n_hits_edge <= i]
     
     if len(rows) == 0:
         rows = None
@@ -229,7 +237,7 @@ os.makedirs(fig_dir, exist_ok=True)
 
 # %%
 # %%time
-nrows = 3
+nrows = 4
 
 rad = (all_types_rows.hull_diameter.max() / 2) * 1.1
 
@@ -252,7 +260,12 @@ for i in range(nrows):
         skel_dir=skel_dir,
         size=300, fig=fig, axs=axs,
         color=colors.cellclass2color['RGC'],
-        show_on_tsne=False, sb_fontsize=8);
+        edge_lw=0.2,
+        node_lw=0.5,
+        soma_marker_size=2,
+        soma_linewidth=0.2,
+        show_on_tsne=False,
+        sb_fontsize=8);
 
     for ax in axs.flat:
         ax.set_xlabel(None)
@@ -266,11 +279,11 @@ for i in range(nrows):
         n_cells_clf = sum(df_ct.celltype_final_decision == 'classifier')
         n_cells_label = n_cells - n_cells_clf
         if n_cells_clf > 0:
-            ax.set_title(f"{ct_short}\n(n={n_cells_label} [+{n_cells_clf}])", fontsize=7)
+            ax.set_title(f"{ct_short}\n(n={n_cells_label}\n[+{n_cells_clf}])", fontsize=7)
         else:
-            ax.set_title(f"{ct_short}\n(n={n_cells_label})", fontsize=7)
+            ax.set_title(f"{ct_short}\n(n={n_cells_label})\n", fontsize=7)
 
-    fig.savefig(f'{fig_dir}/celltype_final-example_set{i}.svg', dpi=600, bbox_inches='tight')
+    fig.savefig(f'{fig_dir}/celltype_final-example_set{i}.svg', dpi=800, bbox_inches='tight')
     
     plt.show()
 
