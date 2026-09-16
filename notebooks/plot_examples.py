@@ -67,7 +67,7 @@ skel_files = {
 try:
     sys.path.append("../dev")
     from skel_sync import sync_skeletons
-    sync_skeletons(skel_files.values(), skel_dir)
+    sync_skeletons([f.replace('.swc', '') for f in list(skel_files.values())], skel_dir)
 except ImportError:
     pass  # dev-only helper, not present outside this machine; swc-examples.zip should already cover this
 

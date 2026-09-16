@@ -198,7 +198,7 @@ all_types_rows
 try:
     sys.path.append("../dev")
     from skel_sync import sync_skeletons
-    sync_skeletons(all_types_rows['skel_file'], skel_dir)
+    sync_skeletons(all_types_rows.index, skel_dir)
 except ImportError:
     pass  # dev-only helper, not present outside this machine; swc-examples.zip should already cover this
 

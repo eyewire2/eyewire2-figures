@@ -161,7 +161,7 @@ def add_skels(df):
     try:
         sys.path.append("../dev")
         from skel_sync import sync_skeletons
-        sync_skeletons(df['swc_path'], skel_dir)
+        sync_skeletons(df.index, skel_dir)
     except ImportError:
         pass  # dev-only helper, not present outside this machine; swc-examples.zip should already cover this
 

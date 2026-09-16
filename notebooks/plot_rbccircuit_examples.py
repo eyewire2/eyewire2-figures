@@ -88,7 +88,7 @@ skel_files = {'A17': f'{skel_dir}/{example_cells['A17']}.npz',
 try:
     sys.path.append("../dev")
     from skel_sync import sync_skeletons
-    sync_skeletons(skel_files.values(), skel_dir, target_ext='.npz')
+    sync_skeletons(example_cells.values(), skel_dir, target_ext='.npz')
 except ImportError:
     pass  # dev-only helper, not present outside this machine; swc-examples.zip should already cover this
 
