@@ -17,5 +17,5 @@ file_prefix_rbc_synapses: "fig8_df_rbc_synapse_"
 version_rb: "2026-09-16-11h"
 
 version_main_cells_sheet: "2026-09-16"
-file_prefix_main_cells_sheet: "Eyewire II Proofread Cells Main List - All Cells - "
-file_prefix_map_sheet: "Eyewire II Proofread Cells Main List - EM-2p-mapping - "
+file_prefix_main_cells_sheet: "Eyewire II Proofread Cells Main List - All Cells "
+file_prefix_map_sheet: "Eyewire II Proofread Cells Main List - EM-2p-mapping "
