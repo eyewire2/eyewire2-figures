@@ -66,20 +66,21 @@ uv run --with jupyter jupyter lab
 
 | Notebook | Figure |
 |---|---|
-| [plot_examples.ipynb](notebooks/plot_examples.ipynb) | Figure 1: Example cell morphologies |
-| [plot_proofreading-stats.ipynb](notebooks/plot_proofreading-stats.ipynb) | Figure 2: Proofreading statistics |
-| [plot_cell_counts.ipynb](notebooks/plot_cell_counts.ipynb) | Figure 2: Cell type counts and statistics |
-| [plot_cellclass_embedding.ipynb](notebooks/plot_cellclass_embedding.ipynb) | Figure 3: Examples and embedding of all neurons |
-| [plot_BCs.ipynb](notebooks/plot_BCs.ipynb) | Figure 4: Bipolar cell types: examples, embeddings and mosaics |
-| [plot_RGCs.ipynb](notebooks/plot_RGCs.ipynb) | Figure 5: Retinal ganglion cell types: examples and mosaics |
-| [plot_RGC_mapping.ipynb](notebooks/plot_RGC_mapping.ipynb) | Figure 6 panel A-G: Mapping from EM to 2p of example RGC |
-| [plot_RGC_examples.ipynb](notebooks/plot_RGC_examples.ipynb) | Figure 6 panel H, I: Retinal ganglion cell example type responses |
-| [plot_response_overview.ipynb](notebooks/plot_response_overview.ipynb) | Figure 6 panel J: Overview of all functional responses |
-| [plot_SACs.ipynb](notebooks/plot_SACs.ipynb) | Figure 7 A, B: Starburst amacrine cells: examples and mosaics |
-| [plot_rbccircuit_examples.ipynb](notebooks/plot_rbccircuit_examples.ipynb) | Figure 8: Rod bipolar cell circuit cell examples |
-| [plot_rbcciruit_fig8_panelD.ipynb](notebooks/plot_rbcciruit_fig8_panelD.ipynb) | Figure 8 panel D: Rod bipolar cell circuit analysis |
-| [plot_ribbons_fig8_panelF.ipynb](notebooks/plot_ribbons_fig8_panelF.ipynb) | Figure 8 panel F: ribbons per BC type |
-| [plot_ribbons_fig8_panelG.ipynb](notebooks/plot_ribbons_fig8_panelG.ipynb) | Figure 8 panel G: ribbons in the IPL |
+| [plot_examples.py](notebooks/plot_examples.py) | Figure 1: Example cell morphologies |
+| [plot_proofreading-stats.py](notebooks/plot_proofreading-stats.py) | Figure 2: Proofreading statistics |
+| [plot_cell_counts.py](notebooks/plot_cell_counts.py) | Figure 2: Cell type counts and statistics |
+| [plot_cellclass_embedding.py](notebooks/plot_cellclass_embedding.py) | Figure 3: Examples and embedding of all neurons |
+| [plot_BCs.py](notebooks/plot_BCs.py) | Figure 4: Bipolar cell types: examples, embeddings and mosaics |
+| [plot_RGCs.py](notebooks/plot_RGCs.py) | Figure 5: Retinal ganglion cell types: examples and mosaics |
+| [plot_RGC_mapping.py](notebooks/plot_RGC_mapping.py) | Figure 6 panel A-G: Mapping from EM to 2p of example RGC |
+| [plot_RGC_examples.py](notebooks/plot_RGC_examples.py) | Figure 6 panel H, I: Retinal ganglion cell example type responses |
+| [plot_response_overview.py](notebooks/plot_response_overview.py) | Figure 6 panel J: Overview of all functional responses |
+| [plot_SACs.py](notebooks/plot_SACs.py) | Figure 7 A, B: Starburst amacrine cells: examples and mosaics |
+| [plot_stim_history.py](notebooks/plot_stim_history.py) | Figure 7 C-F: Light exposure analysis for all calcium imaged fields |
+| [plot_rbccircuit_examples.py](notebooks/plot_rbccircuit_examples.py) | Figure 8: Rod bipolar cell circuit cell examples |
+| [plot_rbcciruit_fig8_panelD.py](notebooks/plot_rbcciruit_fig8_panelD.py) | Figure 8 panel D: Rod bipolar cell circuit analysis |
+| [plot_ribbons_fig8_panelF.py](notebooks/plot_ribbons_fig8_panelF.py) | Figure 8 panel F: ribbons per BC type |
+| [plot_ribbons_fig8_panelG.py](notebooks/plot_ribbons_fig8_panelG.py) | Figure 8 panel G: ribbons in the IPL |
 
 
 For all deeper analyses of functional responses, refer to the notebooks in [this folder](https://github.com/eyewire2/eyewire2-functional-analysis/tree/main/notebooks/analysis/) in our separate repository for functional data.
