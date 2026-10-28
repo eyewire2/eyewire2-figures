@@ -217,16 +217,12 @@ css = [
 
 [[package]]
 name = "cell-mosaics"
-version = "0.1.1"
-source = { registry = "https://pypi.org/simple" }
+version = "0.1.3"
+source = { git = "https://github.com/berenslab/cell_mosaics?rev=72e189eeab1a13bb125ee6eb7cf5836a1fbab034#72e189eeab1a13bb125ee6eb7cf5836a1fbab034" }
 dependencies = [
     { name = "matplotlib" },
     { name = "scikit-image" },
     { name = "scipy" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/49/e5/1e03ea1a74e86ab3c7aa75daa1c544e7ab104f1f1af82aa0230803651ca2/cell_mosaics-0.1.1.tar.gz", hash = "sha256:9c7742a134d6555decf264c7ff7415cc8a7a25b9eceb12ba746985f8f13edd36", size = 46512416, upload-time = "2026-01-20T09:17:57.226Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/fc/a2/8d68e8dd72002302426431765f2cb9de65e6843484a88f5261b43f72f732/cell_mosaics-0.1.1-py3-none-any.whl", hash = "sha256:6f3d7cf2653cbb15310798e5caaafc1a12d04da74128580d68c492d1c245d153", size = 544135, upload-time = "2026-01-20T09:17:37.579Z" },
 ]
 
 [[package]]
@@ -589,7 +585,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "adjusttext", specifier = ">=1.3.0" },
-    { name = "cell-mosaics", specifier = ">=0.1.1" },
+    { name = "cell-mosaics", git = "https://github.com/berenslab/cell_mosaics?rev=72e189eeab1a13bb125ee6eb7cf5836a1fbab034" },
     { name = "fastparquet", specifier = ">=2026.5.0" },
     { name = "ipykernel", specifier = ">=7.2.0" },
     { name = "jupyterlab", specifier = ">=4.5.7" },
