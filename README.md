@@ -82,6 +82,6 @@ uv run --with jupyter jupyter lab
 | [plot_rbcciruit_fig8_panelD.ipynb](notebooks/plot_rbcciruit_fig8_panelD.ipynb) | Figure 8 panel D: Rod bipolar cell circuit analysis |
 | [plot_ribbons_fig8_panelF.ipynb](notebooks/plot_ribbons_fig8_panelF.ipynb) | Figure 8 panel F: ribbons per BC type |
 | [plot_ribbons_fig8_panelG.ipynb](notebooks/plot_ribbons_fig8_panelG.ipynb) | Figure 8 panel G: ribbons in the IPL |
-| [plot_A17_mosaics.ipynb](notebooks/plot_A17_mosaics.ipynb) | Figure 3: Preprocessing pipeline |
+| [plot_A17_mosaics.ipynb](notebooks/plot_A17_mosaics.ipynb) | Supplement: A17 mosaic analysis |
 
 For all deeper analyses of functional responses, refer to the notebooks in [this folder](https://github.com/eyewire2/eyewire2-functional-analysis/tree/main/notebooks/analysis/) in our separate repository for functional data.
