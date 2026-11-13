@@ -34,8 +34,8 @@ def get_file_path(config, version = "version", file_prefix = "file_prefix"):
 # def get_file_path_ribbons(config):
 #     """Construct the file path for the dataset based on the configuration."""
 #     root = config.get("root", "../data")
-#     version = config.get("version_rb", "2026-05-28-11h")
-#     file_prefix = config.get("file_prefix_rb", "df_ribbons_")
+#     version = config.get("version_rbc", "2026-05-28-11h")
+#     file_prefix = config.get("file_prefix_ribbons", "df_ribbons_")
 #     file_path = os.path.abspath(os.path.join(root, f"{file_prefix}{version}.parquet"))
 #     return file_path
 

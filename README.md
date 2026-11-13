@@ -77,10 +77,12 @@ uv run --with jupyter jupyter lab
 | [plot_response_overview.py](notebooks/plot_response_overview.py) | Figure 6 panel J: Overview of all functional responses |
 | [plot_SACs.py](notebooks/plot_SACs.py) | Figure 7 A, B: Starburst amacrine cells: examples and mosaics |
 | [plot_stim_history.py](notebooks/plot_stim_history.py) | Figure 7 C-F: Light exposure analysis for all calcium imaged fields |
-| [plot_rbccircuit_examples.py](notebooks/plot_rbccircuit_examples.py) | Figure 8: Rod bipolar cell circuit cell examples |
-| [plot_rbcciruit_fig8_panelD.py](notebooks/plot_rbcciruit_fig8_panelD.py) | Figure 8 panel D: Rod bipolar cell circuit analysis |
-| [plot_ribbons_fig8_panelF.py](notebooks/plot_ribbons_fig8_panelF.py) | Figure 8 panel F: ribbons per BC type |
-| [plot_ribbons_fig8_panelG.py](notebooks/plot_ribbons_fig8_panelG.py) | Figure 8 panel G: ribbons in the IPL |
+| [plot_fig8_rbccircuit_panelE.ipynb](notebooks/plot_fig8_rbccircuit_panelE.ipynb) | Figure 8 panel E: Rod bipolar cell circuit cell examples |
+| [plot_fig8_rbcciruit_panelD.ipynb](notebooks/plot_fig8_rbcciruit_panelD.ipynb) | Figure 8 panel D: Rod bipolar cell circuit analysis |
+| [plot_fig8_ribbons_panelF.ipynb](notebooks/plot_fig8_ribbons_panelF.ipynb) | Figure 8 panel F: ribbons per BC type; Supplementary Figures 7, 8: ribbon count/size distributions and pairwise statistics |
+| [plot_fig8_ribbons_panelG.ipynb](notebooks/plot_fig8_ribbons_panelG.ipynb) | Figure 8 panel G: ribbons in the IPL |
+| [plot_sfig10_OPL_autosegments.ipynb](notebooks/plot_sfig10_OPL_autosegments.ipynb) | Supplementary Figure 10: OPL segments, proofread vs predicted photoreceptor type |
+| [plot_sfig2_A17_inputs.ipynb](notebooks/plot_sfig2_A17_inputs.ipynb) | Supplementary Figure 2: A17 inputs from bipolar cells |
 
 
 For all deeper analyses of functional responses, refer to the notebooks in [this folder](https://github.com/eyewire2/eyewire2-functional-analysis/tree/main/notebooks/analysis/) in our separate repository for functional data.

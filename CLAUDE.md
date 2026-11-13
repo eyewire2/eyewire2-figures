@@ -36,15 +36,18 @@ repo root, i.e.:
 All paths (and dataset version strings / file prefixes) are declared in
 [data_config.yaml](data_config.yaml) at repo root, loaded via `utils/data_io.get_data_config()`
 — never hardcode a data path in a notebook, read it from the config. `data_config.yaml` also
-pins per-dataset `version`/`file_prefix` fields (e.g. `version`, `version_ribbons`, `version_rb`)
+pins per-dataset `version`/`file_prefix` fields (e.g. `version`, `version_ribbons`, `version_rbc`)
 that select which dated parquet snapshot to load; bump these, not the code, when a new data
 export lands.
 
 ## Running the notebooks
 
-Notebooks are stored as `.py` files in **jupytext "percent" format** (see the `# ---
-jupyter: ...` header cell), not `.ipynb` — this keeps diffs reviewable in git. Open them in
-Jupyter or VS Code as notebooks, or run directly with `python notebooks/<script>.py`:
+Notebooks come in two formats. The older ones (Figures 1–7) are `.py` files in **jupytext
+"percent" format** (see the `# --- jupyter: ...` header cell); open them in Jupyter or VS Code
+as notebooks, or run directly with `python notebooks/<script>.py`. The Figure 8 and
+supplementary-figure notebooks (`plot_fig8_*`, `plot_sfig*`) are plain `.ipynb`; run them
+headless with `jupyter nbconvert --to notebook --execute --inplace <notebook>.ipynb` from
+inside `notebooks/` (the `../utils` and `../figures` paths are relative to it).
 
 ```bash
 uv run --with jupyter jupyter lab
