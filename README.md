@@ -79,10 +79,12 @@ uv run --with jupyter jupyter lab
 | [plot_response_overview.ipynb](notebooks/plot_response_overview.ipynb) | Figure 6 panel J: Overview of all functional responses |
 | [plot_SACs.ipynb](notebooks/plot_SACs.ipynb) | Figure 7 A, B: Starburst amacrine cells: examples and mosaics |
 | [plot_stim_history.ipynb](notebooks/plot_stim_history.ipynb) | Figure 7 C-F: Light exposure analysis for all calcium imaged fields |
-| [plot_rbccircuit_examples.ipynb](notebooks/plot_rbccircuit_examples.ipynb) | Figure 8: Rod bipolar cell circuit cell examples |
-| [plot_rbcciruit_fig8_panelD.ipynb](notebooks/plot_rbcciruit_fig8_panelD.ipynb) | Figure 8 panel D: Rod bipolar cell circuit analysis |
-| [plot_ribbons_fig8_panelF.ipynb](notebooks/plot_ribbons_fig8_panelF.ipynb) | Figure 8 panel F: ribbons per BC type |
-| [plot_ribbons_fig8_panelG.ipynb](notebooks/plot_ribbons_fig8_panelG.ipynb) | Figure 8 panel G: ribbons in the IPL |
+| [plot_fig8_rbccircuit_panelE.ipynb](notebooks/plot_fig8_rbccircuit_panelE.ipynb) | Figure 8 panel E: Rod bipolar cell circuit cell examples |
+| [plot_fig8_rbcciruit_panelD.ipynb](notebooks/plot_fig8_rbcciruit_panelD.ipynb) | Figure 8 panel D: Rod bipolar cell circuit analysis |
+| [plot_fig8_ribbons_panelF.ipynb](notebooks/plot_fig8_ribbons_panelF.ipynb) | Figure 8 panel F: ribbons per BC type; Supplementary Figures 7, 8: ribbon count/size distributions and pairwise statistics |
+| [plot_fig8_ribbons_panelG.ipynb](notebooks/plot_fig8_ribbons_panelG.ipynb) | Figure 8 panel G: ribbons in the IPL |
+| [plot_sfig10_OPL_autosegments.ipynb](notebooks/plot_sfig10_OPL_autosegments.ipynb) | Supplementary Figure 10: OPL segments, proofread vs predicted photoreceptor type |
+| [plot_sfig2_A17_inputs.ipynb](notebooks/plot_sfig2_A17_inputs.ipynb) | Supplementary Figure 2: A17 inputs from bipolar cells |
 | [plot_A17_mosaics.ipynb](notebooks/plot_A17_mosaics.ipynb) | Supplement: A17 mosaic analysis |
 | [plot_responses_GCL3.ipynb](notebooks/plot_responses_GCL3.ipynb) | Supplement: morphology and responses of all mapped ROIs in field GCL3 |
 
