@@ -73,7 +73,8 @@ uv run --with jupyter jupyter lab
 | [plot_cellclass_embedding.ipynb](notebooks/plot_cellclass_embedding.ipynb) | Figure 3: Examples and embedding of all neurons |
 | [plot_BCs.ipynb](notebooks/plot_BCs.ipynb) | Figure 4: Bipolar cell types: examples, embeddings and mosaics |
 | [plot_RGCs.ipynb](notebooks/plot_RGCs.ipynb) | Figure 5: Retinal ganglion cell types: examples and mosaics |
-| [plot_RGC_mapping.ipynb](notebooks/plot_RGC_mapping.ipynb) | Figure 6 panel A-G: Mapping from EM to 2p of example RGC |
+| [plot_RGC_mapping.ipynb](notebooks/plot_RGC_mapping.ipynb) | Figure 6 panel A-G: Mapping from EM to 2p of example RGC, plus its mouse-cam receptive field (`example-RGC-rf.svg`, new panel) |
+| [plot_RGC_rfs.ipynb](notebooks/plot_RGC_rfs.ipynb) | New: mouse-cam receptive fields of 12 example RGCs on their skeletons (`example-RGC-rfs.svg`) |
 | [plot_RGC_examples.ipynb](notebooks/plot_RGC_examples.ipynb) | Figure 6 panel H, I: Retinal ganglion cell example type responses |
 | [plot_response_overview.ipynb](notebooks/plot_response_overview.ipynb) | Figure 6 panel J: Overview of all functional responses |
 | [plot_SACs.ipynb](notebooks/plot_SACs.ipynb) | Figure 7 A, B: Starburst amacrine cells: examples and mosaics |

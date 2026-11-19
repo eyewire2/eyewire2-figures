@@ -19,3 +19,9 @@ version_rb: "2026-09-16-11h"
 version_main_cells_sheet: "2026-09-16"
 file_prefix_main_cells_sheet: "Eyewire II Proofread Cells Main List - All Cells "
 file_prefix_map_sheet: "Eyewire II Proofread Cells Main List - EM-2p-mapping "
+
+# Within data_2p_dir, written by eyewire2-functional-analysis: mouse-cam receptive fields, 2p <-> EM registration and
+# the per-field RF alignment (stimulus shift + EM stretch)
+mc_rf_file: "df_eyewire2_roi_level_mc_rf.parquet"
+em_2p_registration_file: "em_2p_registration.yaml"
+rf_alignment_file: "rf_alignment.yaml"

@@ -86,7 +86,12 @@ Notebooks all `sys.path.append("../utils")` and import directly (no package inst
   tSNE/embedding plotting (embedding recompute is optional — see notebook flags).
 - `labeling.py`, `ew1.py`, `baden16_utils.py`, `data_2p_loader.py` — cell-type labeling
   utilities, Eyewire I comparison data, Baden 2016 reference-dataset helpers, and 2p functional
-  data loading, respectively.
+  data loading (incl. the mouse-cam RFs, 2p <-> EM registration and RF alignment from `data-2p`),
+  respectively.
+- `rf.py` — mouse-cam receptive fields on EM skeletons: placing a skeleton in the 2p frame
+  (registration + RF alignment) and plotting sRFs/tRFs. A small copy of
+  `eyewire2-functional-analysis` code (`plot_rf`, `registration`, `rf_alignment`), kept separate
+  per the cross-repo policy below.
 
 ## `notebooks/light_exposure/`
 
