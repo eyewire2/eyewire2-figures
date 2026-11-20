@@ -90,6 +90,40 @@ def load_all_dfs(data_folder: str | Path = DATA_2P) -> tuple[pd.DataFrame, pd.Da
     return df_rois, df_fields, df_outline
 
 
+ROI_KEY_COLS = ['experimenter', 'date', 'exp_num', 'field', 'roi_id']
+
+
+def load_df_mc_rfs(data_folder: str | Path = DATA_2P) -> pd.DataFrame:
+    """Load the mouse-cam receptive fields (one row per ROI, columns ``mc_rf_*``; see
+    ``df_eyewire2_roi_level_mc_rf.md`` next to the parquet). Join to the ROI tables on ``ROI_KEY_COLS``.
+
+    Args:
+        data_folder: Path to the directory containing the RF parquet (``mc_rf_file`` in ``data_config.yaml``).
+
+    Returns:
+        pandas.DataFrame: ROI-level DataFrame with the RF columns.
+    """
+    return load_parquet_df(os.path.join(data_folder, _config["mc_rf_file"]))
+
+
+def _load_yaml(path):
+    import yaml
+    with open(path) as f:
+        return yaml.safe_load(f)
+
+
+def load_registration(data_folder: str | Path = DATA_2P) -> dict:
+    """Load the 2p <-> EM registration (global and per-field rotation + scale, both directions), fitted in
+    eyewire2-functional-analysis (``scripts/preprocessing/em_2p_registration/em-2p-mapping.py``)."""
+    return _load_yaml(os.path.join(data_folder, _config["em_2p_registration_file"]))
+
+
+def load_rf_alignment(data_folder: str | Path = DATA_2P) -> dict:
+    """Load the per-field RF alignment (stimulus shift from the moving bar, EM -> 2p stretch), estimated in
+    eyewire2-functional-analysis (``scripts/analysis/rf_offsets/rf_offsets.py``)."""
+    return _load_yaml(os.path.join(data_folder, _config["rf_alignment_file"]))
+
+
 def load_df_rois_morph(
         data_folder: str | Path = DATA_2P,
         spreadsheet_folder: str | Path = DATA_SS,

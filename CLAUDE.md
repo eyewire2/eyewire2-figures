@@ -36,15 +36,15 @@ repo root, i.e.:
 All paths (and dataset version strings / file prefixes) are declared in
 [data_config.yaml](data_config.yaml) at repo root, loaded via `utils/data_io.get_data_config()`
 — never hardcode a data path in a notebook, read it from the config. `data_config.yaml` also
-pins per-dataset `version`/`file_prefix` fields (e.g. `version`, `version_ribbons`, `version_rb`)
+pins per-dataset `version`/`file_prefix` fields (e.g. `version`, `version_ribbons`, `version_rbc`)
 that select which dated parquet snapshot to load; bump these, not the code, when a new data
 export lands.
 
 ## Running the notebooks
 
-Notebooks are stored as `.py` files in **jupytext "percent" format** (see the `# ---
-jupyter: ...` header cell), not `.ipynb` — this keeps diffs reviewable in git. Open them in
-Jupyter or VS Code as notebooks, or run directly with `python notebooks/<script>.py`:
+Notebooks are plain `.ipynb` files. Open them in Jupyter or VS Code, or run them headless with
+`jupyter nbconvert --to notebook --execute --inplace <notebook>.ipynb` from inside `notebooks/`
+(the `../utils` and `../figures` paths are relative to it).
 
 ```bash
 uv run --with jupyter jupyter lab
@@ -86,7 +86,12 @@ Notebooks all `sys.path.append("../utils")` and import directly (no package inst
   tSNE/embedding plotting (embedding recompute is optional — see notebook flags).
 - `labeling.py`, `ew1.py`, `baden16_utils.py`, `data_2p_loader.py` — cell-type labeling
   utilities, Eyewire I comparison data, Baden 2016 reference-dataset helpers, and 2p functional
-  data loading, respectively.
+  data loading (incl. the mouse-cam RFs, 2p <-> EM registration and RF alignment from `data-2p`),
+  respectively.
+- `rf.py` — mouse-cam receptive fields on EM skeletons: placing a skeleton in the 2p frame
+  (registration + RF alignment) and plotting sRFs/tRFs. A small copy of
+  `eyewire2-functional-analysis` code (`plot_rf`, `registration`, `rf_alignment`), kept separate
+  per the cross-repo policy below.
 
 ## `notebooks/light_exposure/`
 

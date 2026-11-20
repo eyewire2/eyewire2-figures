@@ -6,16 +6,26 @@ data_2p_dir: "../../huggingface/eyewire2-data/data-2p"
 spreadsheet_dir: "../../huggingface/eyewire2-data/spreadsheets"
 track_proofreading_dir: "../../huggingface/eyewire2-data/track_proofreading/track_proofreading/changelogs_csv"
 
-file_prefix: "df_all_neurons_"
 version: "2026-09-16-15h"
+file_prefix: "df_all_neurons_"
 
-file_prefix_rb: "df_ribbons_"
 version_ribbons: "2026-08-07-12h"
+file_prefix_ribbons: "df_ribbons_"
+file_opl_segments: "figS10_manuscript_opl_segments_proofread.csv"
 
+version_A17_inputs: "2026-10-30-11h"
+file_prefix_A17_inputs: "figS2_A17_ribbon_inputs_"
+
+version_rbc: "2026-09-16-11h"
 file_prefix_rbc_celltypes: "fig8_df_rbc_celltype_"
 file_prefix_rbc_synapses: "fig8_df_rbc_synapse_"
-version_rb: "2026-09-16-11h"
 
 version_main_cells_sheet: "2026-09-16"
 file_prefix_main_cells_sheet: "Eyewire II Proofread Cells Main List - All Cells "
 file_prefix_map_sheet: "Eyewire II Proofread Cells Main List - EM-2p-mapping "
+
+# Within data_2p_dir, written by eyewire2-functional-analysis: mouse-cam receptive fields, 2p <-> EM registration and
+# the per-field RF alignment (stimulus shift + EM stretch)
+mc_rf_file: "df_eyewire2_roi_level_mc_rf.parquet"
+em_2p_registration_file: "em_2p_registration.yaml"
+rf_alignment_file: "rf_alignment.yaml"

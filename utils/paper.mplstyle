@@ -30,9 +30,9 @@ font.serif : Times New Roman
 mathtext.fontset : custom
 mathtext.default : cal
 mathtext.cal : DejaVu Sans
-mathtext.rm : Arial
-mathtext.sf : Arial
-mathtext.tt : Arial
+mathtext.rm : sans
+mathtext.sf : sans
+mathtext.tt : sans
 
 legend.borderaxespad : 0.2
 legend.borderpad : 0.0
