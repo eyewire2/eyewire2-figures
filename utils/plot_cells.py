@@ -14,9 +14,17 @@ from matplotlib.patches import Circle
 import seaborn as sns
 
 import skeliner as sk
-from skeliner.plot.vis2d import _project
 
 import colors
+
+
+def _project(arr: np.ndarray, ix: int, iy: int, /) -> np.ndarray:
+    """Return the 2-column slice arr[:, (ix, iy)].
+
+    Local copy of skeliner's private helper, whose module path changed between
+    releases (skeliner.plot.vis2d in 0.2.x, skeliner.plot in 0.4.x).
+    """
+    return arr[:, (ix, iy)].copy()
 
 _PLANE_AXES = {
     "xy": (0, 1),

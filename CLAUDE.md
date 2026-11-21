@@ -9,6 +9,10 @@ https://www.biorxiv.org/content/10.64898/2026.05.28.727403v1). Each notebook in
 [notebooks/](notebooks/) regenerates one or more figure panels from data pulled out of a
 shared, separately-downloaded dataset (`eyewire2-data`).
 
+**Always read [inkscape/CLAUDE_figures.md](inkscape/CLAUDE_figures.md) at the start of a session**:
+it holds the figure naming rules (e.g. new bipolar cell type names, On/Off instead of ON/OFF).
+Apply them to every figure, and note that the data and notebooks still use the old bipolar cell type names.
+
 ## Setup
 
 ```bash
