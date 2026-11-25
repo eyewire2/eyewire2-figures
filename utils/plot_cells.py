@@ -75,6 +75,8 @@ def skeliner_projection(
     soma_marker_size: float = 15,
     soma_linewidth: float = 0.8,
     show_soma: bool = True,
+    depth_sort: bool = False,
+    n_depth_slices: int = 60,
 ) -> tuple[Figure, Axes]:
     """Orthographic 2-D projection of a skeleton (node circles, edges, soma marker).
 
@@ -113,6 +115,13 @@ def skeliner_projection(
     show_soma : bool
         Whether to draw the soma marker/circle at all. Set to False when the
         soma centre falls outside the plotted window.
+    depth_sort : bool
+        If True, draw nodes and edges back to front along the axis orthogonal to the plane (higher values on top;
+        in the xy plane: higher z, i.e. up in the xz side view), so that upper dendrites occlude lower ones. Node circles are
+        sorted exactly; edges are interleaved with the circles in ``n_depth_slices`` slices of the depth range.
+        If False (default), all edges are drawn on top of all node circles.
+    n_depth_slices : int
+        Number of depth slices used for ``depth_sort``.
 
     Returns
     -------
@@ -131,6 +140,7 @@ def skeliner_projection(
         unit = skel.meta.get("unit", None)
 
     xy_skel = _project(skel.nodes, ix, iy) * scale
+    depth = skel.nodes[:, 3 - ix - iy] * scale  # coordinate orthogonal to the plane
     rr = skel.radii[radius_metric] * scale
 
     def _crop_window(xy: np.ndarray) -> np.ndarray:
@@ -144,6 +154,7 @@ def skeliner_projection(
     keep_skel = _crop_window(xy_skel)
     xy_skel = xy_skel[keep_skel]
     rr = rr[keep_skel]
+    depth = depth[keep_skel]
 
     if ax is None:
         fig, ax = plt.subplots(figsize=(6, 6))
@@ -164,17 +175,28 @@ def skeliner_projection(
         sizes, _ppd = _radii_to_sizes(rr, ax)
 
         # node 0 is the soma centre, drawn separately below
-        ax.scatter(
-            xy_skel[1:, 0],
-            xy_skel[1:, 1],
-            s=sizes[1:],
-            facecolors=node_color,
-            edgecolors=node_color,
-            linewidths=node_lw,
-            alpha=circle_alpha,
-            zorder=1,
-            rasterized=rasterized,
-        )
+        is_node = np.ones(len(xy_skel), dtype=bool)
+        is_node[0] = False
+        if depth_sort:
+            slice_edges = np.linspace(depth.min(), depth.max(), n_depth_slices + 1)
+            node_slice = np.clip(np.searchsorted(slice_edges, depth, side='right') - 1, 0, n_depth_slices - 1)
+        else:
+            node_slice = np.zeros(len(xy_skel), dtype=int)
+
+        for k in np.unique(node_slice[is_node]):
+            sel = np.flatnonzero(is_node & (node_slice == k))
+            sel = sel[np.argsort(depth[sel], kind='stable')] if depth_sort else sel
+            ax.scatter(
+                xy_skel[sel, 0],
+                xy_skel[sel, 1],
+                s=sizes[sel],
+                facecolors=node_color,
+                edgecolors=node_color,
+                linewidths=node_lw,
+                alpha=circle_alpha,
+                zorder=1 + k / n_depth_slices if depth_sort else 1,
+                rasterized=rasterized,
+            )
 
     # soma marker
     if show_soma:
@@ -211,21 +233,29 @@ def skeliner_projection(
             idx_map = -np.ones(len(keep_skel), int)
             idx_map[np.flatnonzero(keep_skel)] = np.arange(keep_skel.sum())
 
-            seg_start = xy_skel[idx_map[edges_kept[:, 0]]]
-            seg_end = xy_skel[idx_map[edges_kept[:, 1]]]
-            segments = np.stack((seg_start, seg_end), axis=1)
+            i0, i1 = idx_map[edges_kept[:, 0]], idx_map[edges_kept[:, 1]]
+            segments = np.stack((xy_skel[i0], xy_skel[i1]), axis=1)
 
-            lc = LineCollection(
-                segments.tolist(),
-                colors="black",
-                linewidths=edge_lw,
-                alpha=1.0,
-                zorder=2,
-                rasterized=rasterized,
-                capstyle='round',
-                joinstyle='round',
-            )
-            ax.add_collection(lc)
+            if depth_sort:
+                # an edge belongs to the slice of its upper node: above its own circles, below higher circles
+                edge_slice = np.maximum(node_slice[i0], node_slice[i1])
+                groups = [(k, edge_slice == k) for k in np.unique(edge_slice)]
+            else:
+                groups = [(None, slice(None))]
+
+            for k, sel in groups:
+                lc = LineCollection(
+                    segments[sel].tolist(),
+                    colors="black",
+                    linewidths=edge_lw,
+                    alpha=1.0,
+                    # just above the circles of the same slice (circle zorders step by 1 / n_depth_slices)
+                    zorder=2 if k is None else 1 + (k + 0.5) / n_depth_slices,
+                    rasterized=rasterized,
+                    capstyle='round',
+                    joinstyle='round',
+                )
+                ax.add_collection(lc)
 
     if plane in ['xy', 'yx']:
         ax.set_aspect('equal', adjustable='box')
@@ -329,6 +359,7 @@ def plot_cell_morphologies(
         node_lw: float = 0.5,
         soma_marker_size: float = 15,
         soma_linewidth: float = 0.8,
+        depth_sort: bool = False,
         # --- tSNE plot parameters (only used if show_on_tsne=True) ---
         df: Optional[pd.DataFrame] = None,
         is_labelled: Optional[np.ndarray] = None,
@@ -384,6 +415,8 @@ def plot_cell_morphologies(
         Size of the soma centre-dot marker, passed to ``skeliner_projection``.
     soma_linewidth : float, optional
         Line width of the soma circle outline, passed to ``skeliner_projection``.
+    depth_sort : bool, optional
+        Draw upper dendrites on top of lower ones, passed to ``skeliner_projection``. Default is False.
     df : pd.DataFrame, optional
         Full embedding DataFrame containing ``tsne_d0``, ``tsne_d1`` columns
         for background scatter. Required when ``show_on_tsne=True``.
@@ -491,6 +524,7 @@ def plot_cell_morphologies(
                 soma_marker_size=soma_marker_size,
                 soma_linewidth=soma_linewidth,
                 show_soma=soma_in_bounds,
+                depth_sort=depth_sort,
             )
             ax.set_xlim(-rad, +rad)
 
