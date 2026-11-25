@@ -6,8 +6,9 @@ import warnings
 
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
+import matplotlib
 import matplotlib.cm as cm
-from matplotlib.colors import ListedColormap
+from matplotlib.colors import Colormap, ListedColormap
 
 import cell_mosaics
 
@@ -44,7 +45,8 @@ def plot_coverage(
         warnings.warn('max_val too small')
 
     # Get colors from the specified colormap
-    base_cmap = cm.get_cmap(colormap)
+    # (matplotlib.cm.get_cmap was removed in matplotlib 3.9)
+    base_cmap = colormap if isinstance(colormap, Colormap) else matplotlib.colormaps[colormap]
     colors = base_cmap(np.linspace(0, 1, n_levels))
     discrete_cmap = ListedColormap(colors)
 

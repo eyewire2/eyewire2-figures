@@ -30,6 +30,32 @@ def get_file_path(config, version = "version", file_prefix = "file_prefix"):
     return file_path
 
 
+def load_df_all_neurons(columns=None, config=None, verbose=True):
+    """Load the ``df_all_neurons`` parquet with the resource-paper RGC type labels applied.
+
+    Always use this instead of ``pd.read_parquet`` on the dataset: the parquet's RGC labels are outdated, see
+    ``rgc_labels.py`` for the rules and the added columns (``Label from RGC types sheet``, ``Updated Cell Type``,
+    ``Updated Cell Class``, and ``<label column>_parquet`` with the original values).
+
+    Args:
+        columns: Columns to load (None: all). The label columns needed for the update are read in any case; the
+            result has the requested columns plus the added ones.
+        config: Data config (default: ``get_data_config()``).
+        verbose: Print a one-line summary of the label update.
+    """
+    import rgc_labels
+
+    config = get_data_config() if config is None else config
+    file_path = get_file_path(config)
+    read_cols = None if columns is None else list(dict.fromkeys(list(columns) + rgc_labels.PARQUET_LABEL_COLS))
+    df = pd.read_parquet(file_path, columns=read_cols)
+    df = rgc_labels.apply_to_parquet(df, rgc_labels.load_rgc_types_sheet(config), verbose=verbose)
+    if columns is not None:
+        added = [c for c in df.columns if c not in read_cols]
+        df = df[list(columns) + added]
+    return df
+
+
 
 # def get_file_path_ribbons(config):
 #     """Construct the file path for the dataset based on the configuration."""

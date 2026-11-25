@@ -5,6 +5,7 @@ import pandas as pd
 from pathlib import Path
 
 from data_io import get_data_config, restore_numpy_arrays
+import rgc_labels
 
 
 _config = get_data_config()
@@ -175,6 +176,8 @@ def load_df_rois_morph(
 
     df_main = pd.read_csv(os.path.join(os.path.join(spreadsheet_folder, main_all_cells_sheet)), dtype=str).dropna(
         axis=1, how='all')
+    # Resource-paper RGC types on top of the sheet's labels (rgc_labels.py)
+    df_main = rgc_labels.apply_to_main_sheet(df_main, rgc_labels.load_rgc_types_sheet(_config), verbose=verbose)
 
     df_map = pd.read_csv(os.path.join(os.path.join(spreadsheet_folder, map_sheet)), dtype=str).dropna(axis=1, how='all')
 

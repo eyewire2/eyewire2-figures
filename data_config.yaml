@@ -24,6 +24,11 @@ version_main_cells_sheet: "2026-09-16"
 file_prefix_main_cells_sheet: "Eyewire II Proofread Cells Main List - All Cells "
 file_prefix_map_sheet: "Eyewire II Proofread Cells Main List - EM-2p-mapping "
 
+# Resource-paper RGC types (renamed + refined after the export above), in spreadsheet_dir. Applied on top of the parquet
+# and the main sheet labels by utils/rgc_labels.py (data_io.load_df_all_neurons, data_2p_loader.load_df_rois_morph).
+version_rgc_types_sheet: "2026-11-25"
+file_prefix_rgc_types_sheet: "Eyewire II Proofread Cells Main List - RGC types resource paper "
+
 # Within data_2p_dir, written by eyewire2-functional-analysis: mouse-cam receptive fields, 2p <-> EM registration and
 # the per-field RF alignment (stimulus shift + EM stretch)
 mc_rf_file: "df_eyewire2_roi_level_mc_rf.parquet"
