@@ -1,50 +1,32 @@
 ﻿Cell Type,Cell Type Short,Show,ew1type
-Bursty suppressed by contrast,bSbC,1,2o
 M1,M1,1,1ws
 F-mini-OFF,FmOff,1,2an
 F-mini-ON,FmOn,1,63
-HD1,HD1,1,5si
-HD2,HD2,1,5so
-Local edge detector,LED,1,51
+EW5si,e5si,1,5si
 M2,M2,1,9w
 M6,M6,1,91
-5to,e5to,1,5to
-OFF horizontal OS - symmetric,hOffOS,0,2aw
-OFF medium sustained,sOff-m,1,2i
-OFF sustained alpha,sOff-a,1,1wt
-OFF sustained EW1no,e1no,1,1no
-OFF sustained EW3o,e3o,1,3o
+EW5to,e5to,1,5to
+EW2i,e2i,1,2i
+EW1no,e1no,1,1no
 OFF transient alpha,tOff-a,1,4ow
-OFF transient medium RF,tOff-m,1,4on
-OFF transient small RF,tOff-s,1,4i
-OFF vertical OS - asymmetric,vOffOS,1,2aw
-ON alpha,sOn-a,1,8w
-ON bursty,bOnSbC,1,3i
-ON delayed,dOnSbC,1,73
-ON DS sustained - direction unknown,sOnDS,1,"7iv,r,d"
-ON DS sustained - dorsonasal,sOnDS-dn,0,7iv
-ON DS sustained - temporal,sOnDS-t,0,7ir
-ON DS sustained - ventral,sOnDS-v,0,7id
-ON DS transient - temporal,tOnDS-t,0,7o
-ON OS large RF - orientation unknown,OnOS-l,1,-
-ON OS small RF - orientation unknown,OnOS-s,1,-
-ON small OFF large,On-s-Off-l,1,1ni
-ON transient EW6t,e6t,1,6t
-ON transient medium RF,tOn-m,1,6sw
-ON transient small RF,tOn-s,1,6sn
-ON vertical OS large RF,vOnOS-l,0,tbd
-ON vertical OS small RF,vOnOS-s,0,tbd
-ON horizontal OS small RF,hOnOS-s,0,tbd
-ON horizontal OS large RF,hOnOSl,0,tbd
-ON-OFF DS - direction unknown,OODS,1,37
-ON-OFF DS - dorsal,OODS-d,0,37v
-ON-OFF DS - nasal,OODS-n,0,37c
-ON-OFF DS - temporal,OODS-t,0,37r
-ON-OFF DS - ventral,OODS-v,1,37d
-PixON,M5,1,9n
-Sustained suppressed-by-contrast no surround EW27,e27,1,27
-Sustained suppressed-by-contrast strong surround EW28,e28,1,28
-UHD,UHD,1,5ti
+EW4on,e4on,1,4on
+ON DS EW7i,e7i,1,"7id,ir,iv"
+ON DS EW7o,e7o,1,7o
+EW6t,e6t,1,6t
+ON transient alpha,tON-a,1,6sw
+EW6sn,e6sn,1,6sn
+EW72,e72,1,72
+ON-OFF DS - other directions,OODS,1,"37v,c,r"
+ON-OFF DS - ventral dendrites,OODS-v,1,37d
+M5,M5,1,9n
+EW28,e28,1,28
+EW5ti,e5ti,1,5ti
 EW25,e25,1,25
-EW915,e915,1,915
-EW85,e85,1,85
+EW3o,e3o,1,3o
+EW1ni,e1ni,1,1ni
+OFF sustained alpha,sOFF-a,1,1wt
+EW2o,e2o,1,2o
+ON sustained alpha,sON-a,1,8w
+EW73,e73,1,73
+EW3i,e3i,1,3i
+EW4i,e4i,1,4i

@@ -5,6 +5,7 @@ import pandas as pd
 from pathlib import Path
 
 from data_io import get_data_config, restore_numpy_arrays
+import rgc_labels
 
 
 _config = get_data_config()
@@ -90,6 +91,40 @@ def load_all_dfs(data_folder: str | Path = DATA_2P) -> tuple[pd.DataFrame, pd.Da
     return df_rois, df_fields, df_outline
 
 
+ROI_KEY_COLS = ['experimenter', 'date', 'exp_num', 'field', 'roi_id']
+
+
+def load_df_mc_rfs(data_folder: str | Path = DATA_2P) -> pd.DataFrame:
+    """Load the mouse-cam receptive fields (one row per ROI, columns ``mc_rf_*``; see
+    ``df_eyewire2_roi_level_mc_rf.md`` next to the parquet). Join to the ROI tables on ``ROI_KEY_COLS``.
+
+    Args:
+        data_folder: Path to the directory containing the RF parquet (``mc_rf_file`` in ``data_config.yaml``).
+
+    Returns:
+        pandas.DataFrame: ROI-level DataFrame with the RF columns.
+    """
+    return load_parquet_df(os.path.join(data_folder, _config["mc_rf_file"]))
+
+
+def _load_yaml(path):
+    import yaml
+    with open(path) as f:
+        return yaml.safe_load(f)
+
+
+def load_registration(data_folder: str | Path = DATA_2P) -> dict:
+    """Load the 2p <-> EM registration (global and per-field rotation + scale, both directions), fitted in
+    eyewire2-functional-analysis (``scripts/preprocessing/em_2p_registration/em-2p-mapping.py``)."""
+    return _load_yaml(os.path.join(data_folder, _config["em_2p_registration_file"]))
+
+
+def load_rf_alignment(data_folder: str | Path = DATA_2P) -> dict:
+    """Load the per-field RF alignment (stimulus shift from the moving bar, EM -> 2p stretch), estimated in
+    eyewire2-functional-analysis (``scripts/analysis/rf_offsets/rf_offsets.py``)."""
+    return _load_yaml(os.path.join(data_folder, _config["rf_alignment_file"]))
+
+
 def load_df_rois_morph(
         data_folder: str | Path = DATA_2P,
         spreadsheet_folder: str | Path = DATA_SS,
@@ -141,6 +176,8 @@ def load_df_rois_morph(
 
     df_main = pd.read_csv(os.path.join(os.path.join(spreadsheet_folder, main_all_cells_sheet)), dtype=str).dropna(
         axis=1, how='all')
+    # Resource-paper RGC types on top of the sheet's labels (rgc_labels.py)
+    df_main = rgc_labels.apply_to_main_sheet(df_main, rgc_labels.load_rgc_types_sheet(_config), verbose=verbose)
 
     df_map = pd.read_csv(os.path.join(os.path.join(spreadsheet_folder, map_sheet)), dtype=str).dropna(axis=1, how='all')
 

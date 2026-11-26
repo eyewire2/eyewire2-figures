@@ -1,6 +1,6 @@
 [project]
 name = "eyewire2-figures"
-version = "0.1.0"
+version = "0.2.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -17,11 +17,11 @@ dependencies = [
     "pandas>=2.3.3",
     "pingouin>=0.6.1",
     "pyarrow>=24.0.0",
-    "pywarper>=0.2.6",
     "scanpy>=1.12.1",
     "scipy>=1.17.1",
     "seaborn>=0.13.2",
-    "skeliner>=0.2.7",
+    "skeliner==0.3.1",
+    "pywarper==0.2.8",
     "watermark>=2.6.0",
 ]
 
@@ -31,14 +31,7 @@ dev = [
 ]
 
 [tool.uv.sources]
-# On Windows, the PyPI pywarper release can crash: when the optional scikit-sparse
-# speedup isn't installed, it prints a non-ASCII fallback warning that a default
-# (cp1252) Windows console can't encode. The "windows-fix" branch has that fixed, so
-# use it there; everywhere else stays on the normal PyPI release.
-pywarper = [
-    { git = "https://github.com/berenslab/pywarper", branch = "windows-fix", marker = "sys_platform == 'win32'" },
-]
 # The latest PyPI release (0.1.1) predates the Voronoi border rule and the
 # soma-constrained random simulations used for the A17 mosaic figure; pin the
 # commit that added them until a newer release is on PyPI.
-cell-mosaics = { git = "https://github.com/berenslab/cell_mosaics", rev = "72e189eeab1a13bb125ee6eb7cf5836a1fbab034" }
+cell-mosaics = { git = "https://github.com/berenslab/cell_mosaics", rev = "a68d4475f4fdf93f2d08e2979ef88a7e53d22b6b" }
