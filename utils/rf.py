@@ -12,12 +12,15 @@ by the per-field stimulus shift measured with the moving bar, and skeletons get 
 sRF and tRF are flipped so that the fitted DoG center is positive, i.e. the tRF carries the center polarity: a tRF that
 is positive just before the response means an ON center.
 """
+import itertools
 import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import patches
 from matplotlib.collections import LineCollection
+from scipy.interpolate import BSpline
+from scipy.optimize import least_squares
 
 from skeleton import transform_skel_xy
 
@@ -134,6 +137,78 @@ def rf_radius(row, chs=CHANNELS, margin=20., alignment=None) -> float:
     return float(max(rads)) + margin if rads else 0.
 
 
+# Resolution floor -----------------------------------------------------------------------------------------------------
+
+def bspline_basis(n, df, degree=3):
+    """B-spline basis of shape ``(n, df)`` with uniformly spaced knots on 0, ..., n - 1."""
+    inner = np.linspace(0, n - 1, df - degree + 1)
+    knots = np.r_[[inner[0]] * degree, inner, [inner[-1]] * degree]
+    return BSpline.design_matrix(np.arange(n, dtype=float), knots, degree).toarray()
+
+
+def _unit_gauss(xx, yy, x0, y0, sx, sy, theta):
+    a = np.cos(theta) ** 2 / (2 * sx ** 2) + np.sin(theta) ** 2 / (2 * sy ** 2)
+    b = -np.sin(2 * theta) / (4 * sx ** 2) + np.sin(2 * theta) / (4 * sy ** 2)
+    c = np.sin(theta) ** 2 / (2 * sx ** 2) + np.cos(theta) ** 2 / (2 * sy ** 2)
+    return np.exp(-(a * (xx - x0) ** 2 + 2 * b * (xx - x0) * (yy - y0) + c * (yy - y0) ** 2))
+
+
+def fit_dog_sigmas(srfs, center_prior_sd=4., center_prior_weight=0.05, coupling_weight=0.05,
+                   surround_ratio=(2., 10.), sigma_init=(1.5, 4.)):
+    """Joint DoG fit to the sRFs ``(n_channels, ny, nx)``, with soft priors on the centers (window center and coupling
+    of the channels); returns the center sigmas ``(sx, sy)`` per channel, in pixels."""
+    n_ch, ny, nx = srfs.shape
+    yy, xx = np.mgrid[:ny, :nx].astype(float)
+    xc, yc = (nx - 1) / 2, (ny - 1) / 2
+    z = srfs / np.sqrt(np.sum(srfs ** 2))
+    s_max = float(max(nx, ny))
+    # per channel: x0, y0, theta, sx, sy, amp, k (surround / center sigma), w (relative surround amplitude)
+    lb = np.tile([-0.5, -0.5, -np.inf, 0.3, 0.3, -np.inf, surround_ratio[0], 0.], n_ch)
+    ub = np.tile([nx - 0.5, ny - 0.5, np.inf, s_max, s_max, np.inf, surround_ratio[1], 1.], n_ch)
+
+    def model(p):
+        g = _unit_gauss(xx, yy, p[0], p[1], p[3], p[4], p[2])
+        g = g - p[7] * _unit_gauss(xx, yy, p[0], p[1], p[6] * p[3], p[6] * p[4], p[2])
+        return p[5] * g
+
+    def residuals(theta):
+        ps = theta.reshape(n_ch, 8)
+        res = [(model(p) - z[c]).ravel() for c, p in enumerate(ps)]
+        res.append(np.sqrt(center_prior_weight) * (ps[:, :2] - [xc, yc]).ravel() / center_prior_sd)
+        for i, j in itertools.combinations(range(n_ch), 2):
+            res.append(np.sqrt(coupling_weight) * (ps[i, :2] - ps[j, :2])
+                       / np.sqrt(ps[i, 3] * ps[i, 4] + ps[j, 3] * ps[j, 4]))
+        return np.concatenate(res)
+
+    # start from the window center and from the largest |value|, each with every sigma in sigma_init
+    ch0 = int(np.argmax(np.abs(z).max(axis=(1, 2))))
+    iy, ix = np.unravel_index(np.argmax(np.abs(z[ch0])), (ny, nx))
+    best = None
+    for (x0, y0), s0 in itertools.product({(xc, yc), (float(ix), float(iy))}, sigma_init):
+        g0 = _unit_gauss(xx, yy, x0, y0, s0, s0, 0.)
+        p0 = np.concatenate([[x0, y0, 0., s0, s0, (np.sign(np.sum(g0 * z[c])) or 1.) * max(np.abs(z[c]).max(), 1e-3),
+                              3., 0.2] for c in range(n_ch)])
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter('ignore')
+                sol = least_squares(residuals, np.clip(p0, lb + 1e-6, ub - 1e-6), bounds=(lb, ub), x_scale='jac',
+                                    max_nfev=2000)
+        except (ValueError, np.linalg.LinAlgError):
+            continue
+        if np.isfinite(sol.cost) and (best is None or sol.cost < best.cost):
+            best = sol
+    return best.x.reshape(n_ch, 8)[:, 3:5]
+
+
+def resolution_floor_area(n_px, px_um, df_s=14, n_sigma=2.):
+    """Area (um^2) of the ``n_sigma`` DoG center ellipse of the smallest sRF the RF model can express: the central
+    one of ``df_s`` x ``df_s`` tensor-product B-spline basis functions on the ``n_px`` x ``n_px`` stimulus grid."""
+    basis = bspline_basis(n_px, df_s)
+    srf_min = np.outer(basis[:, df_s // 2], basis[:, df_s // 2])
+    sx, sy = fit_dog_sigmas(np.stack([srf_min, srf_min]))[0]
+    return float(np.pi * n_sigma ** 2 * sx * sy * px_um ** 2)
+
+
 # Plotting -------------------------------------------------------------------------------------------------------------
 
 def plot_skel_lines(ax, skel, color='k', lw=0.5, alpha=0.9, rasterized=True):
@@ -147,17 +222,17 @@ def plot_skel_lines(ax, skel, color='k', lw=0.5, alpha=0.9, rasterized=True):
                                 alpha=alpha * 0.6))
 
 
-def draw_dog(ax, row, ch, color=None, lw=1., min_surround_vol=0.1, alignment=None, zorder=4):
-    """2-sigma ellipses of the DoG center (solid) and, if its relative volume is at least ``min_surround_vol``, the
-    surround (dotted) of channel ``ch``, with a thin white halo."""
+def draw_dog(ax, row, ch, color=None, lw=1., min_surround_vol=0.1, alignment=None, zorder=4, halo=1., n_sigma=2.):
+    """``n_sigma`` ellipses of the DoG center (solid) and, if its relative volume is at least ``min_surround_vol``,
+    the surround (dotted) of channel ``ch``, with a white halo ``halo`` points wider than the line."""
     color = color or CH_COLORS[ch]
     for which, ls in (('center', '-'), ('surround', ':')):
         if which == 'surround' and not surround_volume(row, ch) >= min_surround_vol:
             continue
-        xy = dog_ellipse(row, ch, which, alignment=alignment)
+        xy = dog_ellipse(row, ch, which, n_sigma=n_sigma, alignment=alignment)
         if xy is None:
             continue
-        ax.plot(*xy, c='w', lw=lw + 1., ls='-', alpha=0.8, zorder=zorder, solid_capstyle='round')
+        ax.plot(*xy, c='w', lw=lw + halo, ls='-', alpha=0.8, zorder=zorder, solid_capstyle='round')
         ax.plot(*xy, c=color, lw=lw, ls=ls, zorder=zorder + 0.1)
 
 
@@ -181,13 +256,15 @@ def plot_srf_on_morph(ax, row, skel, ch, vabsmax=None, alignment=None, show_fit=
     return im
 
 
-def plot_orientation(ax, x0, y0, size=40., fontsize=6, lw=0.6):
-    """Two arrows from ``(x0, y0)`` (data units) pointing nasal (right) and dorsal (up), labeled N and D."""
-    kw = dict(arrowstyle='-|>,head_length=0.25,head_width=0.12', lw=lw, color='k', shrinkA=0, shrinkB=0)
+def plot_orientation(ax, x0, y0, size=40., fontsize=6, lw=0.6, head_length=0.25, head_width=0.12, d_offset=1.15):
+    """Two arrows from ``(x0, y0)`` (data units) pointing nasal (right) and dorsal (up), labeled N and D; the D label
+    sits ``d_offset`` arrow lengths above the origin."""
+    kw = dict(arrowstyle=f'-|>,head_length={head_length},head_width={head_width}', lw=lw, color='k', shrinkA=0,
+              shrinkB=0)
     ax.annotate('', xy=(x0 + size, y0), xytext=(x0, y0), arrowprops=kw, annotation_clip=False)
     ax.annotate('', xy=(x0, y0 + size), xytext=(x0, y0), arrowprops=kw, annotation_clip=False)
     ax.text(x0 + size * 1.15, y0, 'N', ha='left', va='center', fontsize=fontsize)
-    ax.text(x0, y0 + size * 1.15, 'D', ha='center', va='bottom', fontsize=fontsize)
+    ax.text(x0, y0 + size * d_offset, 'D', ha='center', va='bottom', fontsize=fontsize)
 
 
 def plot_trfs(ax, row, chs=CHANNELS, lw=1., labels=True):
