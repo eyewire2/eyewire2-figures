@@ -75,7 +75,7 @@ uv run --with jupyter jupyter lab
 | [plot_RGCs.ipynb](notebooks/plot_RGCs.ipynb) | Figure 5: Retinal ganglion cell types: examples and mosaics |
 | [plot_RGC_mosaics.ipynb](notebooks/plot_RGC_mosaics.ipynb) | Supplement: examples and mosaics of all 31 RGC types, in the style of the BC figure (`rgc-mosaics-all.svg`) |
 | [plot_RGC_mapping.ipynb](notebooks/plot_RGC_mapping.ipynb) | Figure 6 panel A-G: Mapping from EM to 2p of example RGC, plus its mouse-cam receptive field (`example-RGC-rf.svg`, new panel) |
-| [plot_RGC_rfs.ipynb](notebooks/plot_RGC_rfs.ipynb) | Figure 6 panel next to G: mouse-cam RF (green / UV sRF with colorbar, tRF) of the example cell ROI 52 (`fig6G_roi52_rf.svg`); Figure 6 panels K, L: RFs of three sON alpha RGCs on their skeletons, and RF center size and position vs. the dendritic hull (`fig6KL_3cells.svg`, split into `_K` / `_L`). Output in `figures/calcium_data/` |
+| [plot_RGC_rfs.ipynb](notebooks/plot_RGC_rfs.ipynb) | Figure 6 panel next to G: mouse-cam RF (green / UV sRF with colorbar, tRF) of the example cell ROI 52 (`fig6G_roi52_rf.svg`); Figure 6 panels K, L: RFs of three sON alpha RGCs on their skeletons, and RF center size and position vs. the dendritic hull (`fig6KL_3cells.svg`). Output in `figures/calcium_data/` |
 | [plot_RGC_examples.ipynb](notebooks/plot_RGC_examples.ipynb) | Figure 6 panel H, I: Retinal ganglion cell example type responses |
 | [plot_response_overview.ipynb](notebooks/plot_response_overview.ipynb) | Figure 6 panel J: Overview of all functional responses |
 | [plot_SACs.ipynb](notebooks/plot_SACs.ipynb) | Figure 7 A, B: Starburst amacrine cells: examples and mosaics |
